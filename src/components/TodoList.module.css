@@ -1,3 +1,17 @@
 .btnDelete {
-    margin-left: 10px;
+  margin-left: 10px;
+}
+.isDone {
+  text-decoration: line-through;
+  color: #9d9d9d;
+}
+.btnActive {
+  background: #7fd7d9;
+}
+.inputError {
+  border: 2px solid red;
+  outline: none;
+}
+.textError {
+  color: red;
 }

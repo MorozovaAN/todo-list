@@ -13,9 +13,20 @@ export const App = () => {
     { id: v1(), title: "JSX", isDone: true },
   ]);
   const [filter, setFilter] = useState<FilterValuesType>("all");
+
   const changeFilter = (filter: FilterValuesType) => {
     setFilter(filter);
   };
+  const addTask = (title: string) => {
+    setTasks([{ id: v1(), title, isDone: false }, ...tasks]);
+  };
+  const removeTask = (id: string) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+  const changeTaskStatus = (id: string, isDone: boolean) => {
+    setTasks(tasks.map((t) => (t.id === id ? { ...t, isDone: isDone } : t)));
+  };
+
   let taskForRender;
   switch (filter) {
     case "completed":
@@ -28,21 +39,16 @@ export const App = () => {
       taskForRender = tasks;
   }
 
-  const removeTask = (id: string) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
-  const addTask = (title: string) => {
-    setTasks([{ id: v1(), title, isDone: false }, ...tasks]);
-  };
-
   return (
     <div className="App">
       <TodoList
         title="What to learn"
+        filter={filter}
         tasks={taskForRender}
         changeFilter={changeFilter}
         removeTask={removeTask}
         addTask={addTask}
+        changeTaskStatus={changeTaskStatus}
       />
     </div>
   );
