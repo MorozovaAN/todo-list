@@ -15,3 +15,12 @@
 .textError {
   color: red;
 }
+.titleContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+.btnDeleteTodoList {
+  height: fit-content;
+  width: fit-content;
+  align-self: center;
+}

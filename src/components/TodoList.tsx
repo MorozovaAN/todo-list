@@ -8,13 +8,15 @@ export type TaskType = {
   isDone: boolean;
 };
 type TodoListType = {
+  todoListId: string;
   title: string;
   filter: FilterValuesType;
   tasks: Array<TaskType>;
-  removeTask: (id: string) => void;
-  changeFilter: (filter: FilterValuesType) => void;
-  addTask: (title: string) => void;
-  changeTaskStatus: (id: string, isDone: boolean) => void;
+  removeTodoList: (todoListId: string) => void;
+  removeTask: (todoListId: string, id: string) => void;
+  changeFilter: (todoListId: string, filter: FilterValuesType) => void;
+  addTask: (todoListId: string, title: string) => void;
+  changeTaskStatus: (todoListId: string, id: string, isDone: boolean) => void;
 };
 
 export const TodoList: FC<TodoListType> = (props) => {
@@ -23,9 +25,13 @@ export const TodoList: FC<TodoListType> = (props) => {
 
   const tasksItem = props.tasks.length ? (
     props.tasks.map((task) => {
-      const removeTask = () => props.removeTask(task.id);
+      const removeTask = () => props.removeTask(props.todoListId, task.id);
       const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeTaskStatus(task.id, e.currentTarget.checked);
+        props.changeTaskStatus(
+          props.todoListId,
+          task.id,
+          e.currentTarget.checked
+        );
       };
 
       return (
@@ -52,7 +58,7 @@ export const TodoList: FC<TodoListType> = (props) => {
 
   const onClickAddTask = () => {
     if (title.trim() !== "") {
-      props.addTask(title.trim());
+      props.addTask(props.todoListId, title.trim());
       setTitle("");
     } else {
       setError(true);
@@ -62,15 +68,28 @@ export const TodoList: FC<TodoListType> = (props) => {
     if (e.key === "Enter") onClickAddTask();
   };
   const changeFilterHandler = (filter: FilterValuesType) => {
-    return () => props.changeFilter(filter);
+    return () => props.changeFilter(props.todoListId, filter);
   };
   const inputOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (error) setError(false);
     setTitle(e.currentTarget.value);
   };
+  const removeTodoListHandler = () => {
+    props.removeTodoList(props.todoListId);
+  };
+
   return (
     <div>
-      <h3>{props.title}</h3>
+      <div className={styles.titleContainer}>
+        <h3>{props.title}</h3>
+        <button
+          className={styles.btnDeleteTodoList}
+          onClick={removeTodoListHandler}
+          type="button"
+        >
+          x
+        </button>
+      </div>
       <div>
         <input
           className={error ? styles.inputError : ""}
