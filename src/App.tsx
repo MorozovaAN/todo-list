@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { TaskType, TodoList } from "./components/TodoList";
+import { TodoList } from "./components/TodoList";
 import { v1 } from "uuid";
 import "./App.css";
+import { AddItemForm } from "./components/AddItemForm/AddItemForm";
 
 export type FilterValuesType = "all" | "active" | "completed";
 type TodoListsType = { id: string; title: string; filter: FilterValuesType };
@@ -26,6 +27,35 @@ export const App = () => {
       { id: v1(), title: "GraphQL", isDone: false },
     ],
   });
+
+  const addTodoList = (title: string) => {
+    const newTodoListId = v1();
+    setTodolists([{ id: newTodoListId, title, filter: "all" }, ...todolists]);
+    setTasks({ ...tasks, [newTodoListId]: [] });
+  };
+
+  const editTodoListTitle = (todoListId: string, title: string) => {
+    setTodolists(
+      todolists.map((l) => (l.id === todoListId ? { ...l, title } : l))
+    );
+  };
+
+  const addTask = (todoListId: string, title: string) => {
+    setTasks({
+      ...tasks,
+      [todoListId]: [{ id: v1(), title, isDone: false }, ...tasks[todoListId]],
+    });
+  };
+
+  const editTask = (todoListId: string, taskId: string, newTitle: string) => {
+    setTasks({
+      ...tasks,
+      [todoListId]: tasks[todoListId].map((t) =>
+        t.id === taskId ? { ...t, title: newTitle } : t
+      ),
+    });
+  };
+
   const removeTodoList = (todoListId: string) => {
     setTodolists(todolists.filter((l) => l.id !== todoListId));
     delete tasks[todoListId];
@@ -38,18 +68,14 @@ export const App = () => {
       )
     );
   };
-  const addTask = (todoListId: string, title: string) => {
-    setTasks({
-      ...tasks,
-      [todoListId]: [{ id: v1(), title, isDone: false }, ...tasks[todoListId]],
-    });
-  };
+
   const removeTask = (todoListId: string, id: string) => {
     setTasks({
       ...tasks,
       [todoListId]: tasks[todoListId].filter((task) => task.id !== id),
     });
   };
+
   const changeTaskStatus = (
     todoListId: string,
     id: string,
@@ -65,6 +91,10 @@ export const App = () => {
 
   return (
     <div className="App">
+      <div>
+        <p>Add new todo list</p>
+        <AddItemForm callBack={addTodoList} />
+      </div>
       {todolists.map((list) => {
         let taskForRender = tasks[list.id];
         switch (list.filter) {
@@ -88,6 +118,8 @@ export const App = () => {
             addTask={addTask}
             changeTaskStatus={changeTaskStatus}
             removeTodoList={removeTodoList}
+            editTask={editTask}
+            editTodoListTitle={editTodoListTitle}
           />
         );
       })}
