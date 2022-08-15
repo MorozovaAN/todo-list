@@ -8,19 +8,20 @@
 .btnActive {
   background: #7fd7d9;
 }
-.inputError {
-  border: 2px solid red;
-  outline: none;
-}
-.textError {
-  color: red;
-}
 .titleContainer {
   display: grid;
   grid-template-columns: auto auto;
+  align-items: center;
 }
 .btnDeleteTodoList {
   height: fit-content;
   width: fit-content;
-  align-self: center;
+}
+.tasksLists {
+  padding: 0;
+}
+.tasksLists li {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
 }

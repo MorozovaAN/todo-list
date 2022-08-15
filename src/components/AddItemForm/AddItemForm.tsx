@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react";
-import styles from "../TodoList.module.css";
+import s from "./AddItemForm.module.css";
+import { Button, TextField } from "@mui/material";
 
 type AddItemFormType = {
   callBack: (title: string) => void;
@@ -27,15 +28,32 @@ export const AddItemForm: FC<AddItemFormType> = ({ callBack }) => {
   };
 
   return (
-    <div>
-      <input
-        className={error ? styles.inputError : ""}
-        value={title}
+    <div className={s.container}>
+      <TextField
         onChange={inputOnChange}
         onKeyDown={onKeyDownAddTask}
+        value={title}
+        error={error}
+        label={error ? "Title is required" : ""}
+        id="standard-basic"
+        variant="standard"
       />
-      <button onClick={onClickAddTask}>+</button>
-      {error && <div className={styles.textError}>Error. Enter task text</div>}
+
+      <Button
+        onClick={onClickAddTask}
+        className={s.button}
+        style={{
+          maxWidth: "25px",
+          maxHeight: "25px",
+          minWidth: "25px",
+          minHeight: "25px",
+          marginLeft: "10px",
+        }}
+        color="success"
+        variant="contained"
+      >
+        +
+      </Button>
     </div>
   );
 };

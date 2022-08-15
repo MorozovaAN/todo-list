@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+.button {
+  align-self: flex-end;
+}
+.inputError {
+  border: 2px solid red;
+  outline: none;
+}
