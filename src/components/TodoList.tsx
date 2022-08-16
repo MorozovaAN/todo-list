@@ -17,10 +17,14 @@ type TodoListType = {
   filter: FilterValuesType;
   tasks: Array<TaskType>;
   removeTodoList: (todoListId: string) => void;
-  removeTask: (todoListId: string, id: string) => void;
+  removeTask: (todoListId: string, taskId: string) => void;
   changeFilter: (todoListId: string, filter: FilterValuesType) => void;
   addTask: (todoListId: string, title: string) => void;
-  changeTaskStatus: (todoListId: string, id: string, isDone: boolean) => void;
+  changeTaskStatus: (
+    todoListId: string,
+    taskId: string,
+    isDone: boolean
+  ) => void;
   editTask: (todoListId: string, taskId: string, newTitle: string) => void;
   editTodoListTitle: (todoListId: string, title: string) => void;
 };
