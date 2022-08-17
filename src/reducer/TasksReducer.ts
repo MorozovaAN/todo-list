@@ -5,7 +5,10 @@ type TasksType = {
   [key: string]: TaskType[];
 };
 
-export const TasksReducer = (state: TasksType, action: ActionsType) => {
+export const tasksReducer = (
+  state: TasksType,
+  action: ActionsType
+): TasksType => {
   switch (action.type) {
     case "ADD-TASK":
       return {

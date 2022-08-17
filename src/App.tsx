@@ -12,10 +12,10 @@ import {
   editTaskAC,
   removeTaskAC,
   removeTodoListTasksAC,
-  TasksReducer,
+  tasksReducer,
 } from "./reducer/TasksReducer";
 import {
-  TodoListsReducer,
+  todoListsReducer,
   addTodoListAC,
   editTodoListTitleAC,
   removeTodoListAC,
@@ -29,12 +29,12 @@ export const App = () => {
   let todolistID1 = v1();
   let todolistID2 = v1();
 
-  const [todolists, dispatchTodoLists] = useReducer(TodoListsReducer, [
+  const [todoLists, dispatchTodoLists] = useReducer(todoListsReducer, [
     { id: todolistID1, title: "What to learn", filter: "all" },
     { id: todolistID2, title: "What to buy", filter: "all" },
   ]);
 
-  const [tasks, dispatchTasks] = useReducer(TasksReducer, {
+  const [tasks, dispatchTasks] = useReducer(tasksReducer, {
     [todolistID1]: [
       { id: v1(), title: "HTML&CSS", isDone: true },
       { id: v1(), title: "JS", isDone: true },
@@ -94,7 +94,7 @@ export const App = () => {
         </Grid>
 
         <Grid container spacing={3}>
-          {todolists.map((list: TodoListType) => {
+          {todoLists.map((list: TodoListType) => {
             let taskForRender = tasks[list.id];
             switch (list.filter) {
               case "completed":

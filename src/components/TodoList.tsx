@@ -1,10 +1,11 @@
-import React, { FC, ChangeEvent } from "react";
+import React, { FC } from "react";
 import styles from "./TodoList.module.css";
 import { FilterValuesType } from "../App";
 import { AddItemForm } from "./AddItemForm/AddItemForm";
 import { EditableSpan } from "./EditableSpan/EditabelSpan";
-import { Button, Checkbox, IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { CustomCheckbox } from "./Checkbox/Checkbox";
 
 export type TaskType = {
   id: string;
@@ -33,21 +34,20 @@ export const TodoList: FC<TodoListType> = (props) => {
   const editTaskHandler = (taskId: string, newTitle: string) => {
     props.editTask(props.todoListId, taskId, newTitle);
   };
+  const changeTaskStatusHandler = (taskId: string, isDone: boolean) => {
+    props.changeTaskStatus(props.todoListId, taskId, isDone);
+  };
 
   const tasksItem = props.tasks.length ? (
     props.tasks.map((task) => {
       const removeTask = () => props.removeTask(props.todoListId, task.id);
-      const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeTaskStatus(
-          props.todoListId,
-          task.id,
-          e.currentTarget.checked
-        );
-      };
 
       return (
         <li className={task.isDone ? styles.isDone : ""} key={task.id}>
-          <Checkbox onChange={changeTaskStatus} checked={task.isDone} />
+          <CustomCheckbox
+            callBack={(isDone) => changeTaskStatusHandler(task.id, isDone)}
+            isDone={task.isDone}
+          />
           <EditableSpan
             title={task.title}
             callBack={(newTitle) => editTaskHandler(task.id, newTitle)}
