@@ -7,11 +7,9 @@ import { ButtonAppBar } from "./components/ButtonAppBar/ButtonAppBar";
 import { Container, Grid, Paper } from "@mui/material";
 import {
   addTaskAC,
-  addTodoListTasksAC,
   changeTaskStatusAC,
   editTaskAC,
   removeTaskAC,
-  removeTodoListTasksAC,
   tasksReducer,
 } from "./reducer/TasksReducer";
 import {
@@ -47,9 +45,9 @@ export const App = () => {
   });
 
   const addTodoList = (title: string) => {
-    const todoListId = v1();
-    dispatchTodoLists(addTodoListAC(title, todoListId));
-    dispatchTasks(addTodoListTasksAC(todoListId));
+    const action = addTodoListAC(title);
+    dispatchTodoLists(action);
+    dispatchTasks(action);
   };
 
   const editTodoListTitle = (todoListId: string, title: string) => {
@@ -57,8 +55,9 @@ export const App = () => {
   };
 
   const removeTodoList = (todoListId: string) => {
-    dispatchTodoLists(removeTodoListAC(todoListId));
-    dispatchTasks(removeTodoListTasksAC(todoListId));
+    const action = removeTodoListAC(todoListId);
+    dispatchTodoLists(action);
+    dispatchTasks(action);
   };
 
   const addTask = (todoListId: string, title: string) => {
