@@ -1,5 +1,5 @@
-import { FilterValuesType } from "../App";
 import { v1 } from "uuid";
+import { FilterValuesType } from "../App";
 
 export type TodoListType = {
   id: string;
