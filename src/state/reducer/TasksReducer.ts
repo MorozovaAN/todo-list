@@ -5,9 +5,10 @@ export type TaskType = { id: string; title: string; isDone: boolean };
 export type TasksType = {
   [key: string]: TaskType[];
 };
+const todoListsInitialState: TasksType = {};
 
 export const tasksReducer = (
-  state: TasksType,
+  state = todoListsInitialState,
   action: ActionsType
 ): TasksType => {
   switch (action.type) {

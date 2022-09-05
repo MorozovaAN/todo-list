@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import styles from "./TodoList.module.css";
-import { FilterValuesType } from "../App";
 import { AddItemForm } from "./AddItemForm/AddItemForm";
 import { EditableSpan } from "./EditableSpan/EditabelSpan";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomCheckbox } from "./Checkbox/Checkbox";
+import { FilterValuesType } from "../state/reducer/TodoListsReducer";
 
 export type TaskType = {
   id: string;
