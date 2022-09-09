@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React, { memo, useCallback } from "react";
 import styles from "./TodoList.module.css";
 import { AddItemForm } from "./AddItemForm/AddItemForm";
 import { EditableSpan } from "./EditableSpan/EditabelSpan";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CustomCheckbox } from "./Checkbox/Checkbox";
 import { FilterValuesType } from "../state/reducer/TodoListsReducer";
+import { Task } from "./Task";
 
 export type TaskType = {
   id: string;
@@ -30,38 +30,22 @@ type TodoListType = {
   editTodoListTitle: (todoListId: string, title: string) => void;
 };
 
-export const TodoList: FC<TodoListType> = (props) => {
-  const editTaskHandler = (taskId: string, newTitle: string) => {
-    props.editTask(props.todoListId, taskId, newTitle);
-  };
-  const changeTaskStatusHandler = (taskId: string, isDone: boolean) => {
-    props.changeTaskStatus(props.todoListId, taskId, isDone);
-  };
+export const TodoList = memo((props: TodoListType) => {
+  let taskForRender;
+  switch (props.filter) {
+    case "completed":
+      taskForRender = props.tasks.filter((task) => task.isDone);
+      break;
+    case "active":
+      taskForRender = props.tasks.filter((task) => !task.isDone);
+      break;
+    default:
+      taskForRender = props.tasks;
+  }
 
   const tasksItem = props.tasks.length ? (
-    props.tasks.map((task) => {
-      const removeTask = () => props.removeTask(props.todoListId, task.id);
-
-      return (
-        <li className={task.isDone ? styles.isDone : ""} key={task.id}>
-          <CustomCheckbox
-            callBack={(isDone) => changeTaskStatusHandler(task.id, isDone)}
-            isDone={task.isDone}
-          />
-          <EditableSpan
-            title={task.title}
-            callBack={(newTitle) => editTaskHandler(task.id, newTitle)}
-          />
-          <IconButton
-            onClick={removeTask}
-            className={styles.btnDelete}
-            aria-label="delete"
-            size="small"
-          >
-            <DeleteIcon fontSize="inherit" />
-          </IconButton>
-        </li>
-      );
+    taskForRender.map((task) => {
+      return <Task key={task.id} task={task} todoListId={props.todoListId} />;
     })
   ) : (
     <span>Your task list is empty</span>
@@ -74,9 +58,14 @@ export const TodoList: FC<TodoListType> = (props) => {
   const removeTodoListHandler = () => {
     props.removeTodoList(props.todoListId);
   };
-  const addTaskHandler = (title: string) => {
-    props.addTask(props.todoListId, title);
-  };
+
+  const addTaskHandler = useCallback(
+    (title: string) => {
+      props.addTask(props.todoListId, title);
+    },
+    [props.addTask, props.todoListId]
+  );
+
   const editTodoListTitleHandler = (newTitle: string) => {
     props.editTodoListTitle(props.todoListId, newTitle);
   };
@@ -123,4 +112,4 @@ export const TodoList: FC<TodoListType> = (props) => {
       </div>
     </div>
   );
-};
+});

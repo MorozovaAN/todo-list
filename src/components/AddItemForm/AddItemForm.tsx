@@ -1,11 +1,11 @@
-import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react";
+import React, { ChangeEvent, KeyboardEvent, memo, useState } from "react";
 import s from "./AddItemForm.module.css";
 import { Button, TextField } from "@mui/material";
 
 type AddItemFormType = {
   callBack: (title: string) => void;
 };
-export const AddItemForm: FC<AddItemFormType> = ({ callBack }) => {
+export const AddItemForm = memo(({ callBack }: AddItemFormType) => {
   const [title, setTitle] = useState("");
   const [error, setError] = useState(false);
 
@@ -56,4 +56,4 @@ export const AddItemForm: FC<AddItemFormType> = ({ callBack }) => {
       </Button>
     </div>
   );
-};
+});
