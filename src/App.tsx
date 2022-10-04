@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { TodoList } from "./components/TodoList";
+import { TodoList } from "./components/TodoList/TodoList";
 import "./App.css";
-import { AddItemForm } from "./components/AddItemForm/AddItemForm";
+import { AddItemForm } from "./components/common/AddItemForm/AddItemForm";
 import { ButtonAppBar } from "./components/ButtonAppBar/ButtonAppBar";
 import { Container, Grid, Paper } from "@mui/material";
 import {

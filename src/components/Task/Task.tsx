@@ -1,16 +1,16 @@
-import styles from "./TodoList.module.css";
-import { CustomCheckbox } from "./Checkbox/Checkbox";
-import { EditableSpan } from "./EditableSpan/EditabelSpan";
+import styles from "../TodoList/TodoList.module.css";
+import { CustomCheckbox } from "../common/Checkbox/Checkbox";
+import { EditableSpan } from "../common/EditableSpan/EditabelSpan";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { memo } from "react";
-import { TaskType } from "./TodoList";
+import { TaskType } from "../TodoList/TodoList";
 import { useDispatch } from "react-redux";
 import {
   changeTaskStatusAC,
   editTaskAC,
   removeTaskAC,
-} from "../state/reducer/TasksReducer";
+} from "../../state/reducer/TasksReducer";
 
 type TaskPropsType = {
   task: TaskType;

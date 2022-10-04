@@ -1,11 +1,11 @@
 import React, { memo, useCallback } from "react";
 import styles from "./TodoList.module.css";
-import { AddItemForm } from "./AddItemForm/AddItemForm";
-import { EditableSpan } from "./EditableSpan/EditabelSpan";
+import { AddItemForm } from "../common/AddItemForm/AddItemForm";
+import { EditableSpan } from "../common/EditableSpan/EditabelSpan";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { FilterValuesType } from "../state/reducer/TodoListsReducer";
-import { Task } from "./Task";
+import { FilterValuesType } from "../../state/reducer/TodoListsReducer";
+import { Task } from "../Task/Task";
 
 export type TaskType = {
   id: string;
