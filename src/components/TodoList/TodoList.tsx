@@ -87,7 +87,7 @@ export const TodoList = memo((props: TodoListType) => {
       <AddItemForm callBack={addTaskHandler} />
 
       <ul className={styles.tasksLists}>{tasksItem}</ul>
-      <div>
+      <div className={styles.buttons}>
         <Button
           onClick={changeFilterHandler("all")}
           variant={props.filter === "all" ? "contained" : "outlined"}
