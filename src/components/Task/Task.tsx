@@ -4,13 +4,13 @@ import { EditableSpan } from "../common/EditableSpan/EditabelSpan";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { memo } from "react";
-import { TaskType } from "../TodoList/TodoList";
-import { useDispatch } from "react-redux";
 import {
-  changeTaskStatusAC,
-  editTaskAC,
-  removeTaskAC,
+  changeTaskTitleAC,
+  deleteTasksTC,
+  updateTasksTC,
 } from "../../state/reducer/TasksReducer";
+import { useAppDispatch } from "../../state/store";
+import { TaskStatuses, TaskType } from "../../api/todolist-api";
 
 type TaskPropsType = {
   task: TaskType;
@@ -18,27 +18,32 @@ type TaskPropsType = {
 };
 
 export const Task = memo(({ task, todoListId }: TaskPropsType) => {
-  const { id, isDone, title } = { ...task };
-  const dispatch = useDispatch();
+  const { id, title, status, ...restTaskProps } = task;
+  const checkedTask = status === TaskStatuses.Completed;
+  const dispatch = useAppDispatch();
 
-  const changeTaskStatusHandler = (newStatus: boolean) => {
-    dispatch(changeTaskStatusAC(todoListId, id, newStatus));
+  const changeTaskStatusHandler = (checked: boolean) => {
+    const newStatus = checked ? TaskStatuses.Completed : TaskStatuses.New;
+    dispatch(updateTasksTC(todoListId, id, newStatus));
   };
 
-  const editTaskHandler = (newTitle: string) => {
-    dispatch(editTaskAC(todoListId, id, newTitle));
+  const changeTaskTitleHandler = (newTitle: string) => {
+    dispatch(changeTaskTitleAC(todoListId, id, newTitle));
   };
 
-  const removeTaskHandler = () => {
-    dispatch(removeTaskAC(todoListId, id));
+  const deleteTask = () => {
+    dispatch(deleteTasksTC(todoListId, id));
   };
 
   return (
-    <li className={isDone ? styles.isDone : ""}>
-      <CustomCheckbox callBack={changeTaskStatusHandler} isDone={isDone} />
-      <EditableSpan title={title} callBack={editTaskHandler} />
+    <li className={status === TaskStatuses.Completed ? styles.isDone : ""}>
+      <CustomCheckbox
+        callBack={changeTaskStatusHandler}
+        checked={checkedTask}
+      />
+      <EditableSpan title={title} callBack={changeTaskTitleHandler} />
       <IconButton
-        onClick={removeTaskHandler}
+        onClick={deleteTask}
         className={styles.btnDelete}
         aria-label="delete"
         size="small"

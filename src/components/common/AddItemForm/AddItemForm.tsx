@@ -15,10 +15,10 @@ export const AddItemForm = memo(({ callBack }: AddItemFormType) => {
   };
 
   const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") onClickAddTask();
+    if (e.key === "Enter") buttonClickHandler();
   };
 
-  const onClickAddTask = () => {
+  const buttonClickHandler = () => {
     if (title.trim() !== "") {
       callBack(title.trim());
       setTitle("");
@@ -40,7 +40,7 @@ export const AddItemForm = memo(({ callBack }: AddItemFormType) => {
       />
 
       <Button
-        onClick={onClickAddTask}
+        onClick={buttonClickHandler}
         className={s.button}
         style={{
           maxWidth: "25px",
