@@ -4,11 +4,7 @@ import { EditableSpan } from "../common/EditableSpan/EditabelSpan";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { memo } from "react";
-import {
-  changeTaskTitleAC,
-  deleteTasksTC,
-  updateTasksTC,
-} from "../../state/reducer/TasksReducer";
+import { deleteTasksTC, updateTasksTC } from "../../state/reducer/TasksReducer";
 import { useAppDispatch } from "../../state/store";
 import { TaskStatuses, TaskType } from "../../api/todolist-api";
 
@@ -24,11 +20,11 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
 
   const changeTaskStatusHandler = (checked: boolean) => {
     const newStatus = checked ? TaskStatuses.Completed : TaskStatuses.New;
-    dispatch(updateTasksTC(todoListId, id, newStatus));
+    dispatch(updateTasksTC(todoListId, id, { status: newStatus }));
   };
 
   const changeTaskTitleHandler = (newTitle: string) => {
-    dispatch(changeTaskTitleAC(todoListId, id, newTitle));
+    dispatch(updateTasksTC(todoListId, id, { title: newTitle }));
   };
 
   const deleteTask = () => {

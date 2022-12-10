@@ -13,23 +13,14 @@ export const todoListsReducer = (
   action: ActionsType
 ): TodoListsType => {
   switch (action.type) {
-    case "SET-TODO-LISTS": {
+    case "SET-TODOLISTS": {
       return action.todoLists.map((tl: TodoListType) => ({
         ...tl,
         filter: "all",
       }));
     }
     case "CREATE-TODOLIST":
-      return [
-        {
-          id: action.todoListId,
-          title: action.title,
-          filter: "all",
-          addedDate: "",
-          order: 0,
-        },
-        ...state,
-      ];
+      return [{ ...action.todoList, filter: "all" }, ...state];
 
     case "CHANGE-TODOLIST-TITLE":
       return state.map((l) =>
@@ -63,11 +54,10 @@ export type deleteTodoListACType = ReturnType<typeof deleteTodoListAC>;
 type editTodoListTitleACType = ReturnType<typeof changeTodoListTitleAC>;
 type changeFilterACType = ReturnType<typeof changeTasksFilterAC>;
 
-export const createTodoListAC = (todoListId: string, title: string) => {
+export const createTodoListAC = (todoList: TodoListType) => {
   return {
     type: "CREATE-TODOLIST",
-    todoListId,
-    title,
+    todoList,
   } as const;
 };
 export const changeTodoListTitleAC = (todoListId: string, title: string) => {
@@ -100,7 +90,7 @@ export const changeTasksFilterAC = (
 
 export const setTodoListsAC = (todoLists: TodoListType[]) => {
   return {
-    type: "SET-TODO-LISTS",
+    type: "SET-TODOLISTS",
     todoLists,
   } as const;
 };
@@ -113,7 +103,7 @@ export const getTodoListsTC = () => (dispatch: Dispatch) => {
 
 export const createTodoListTC = (title: string) => (dispatch: Dispatch) => {
   todolistAPI.createTodoList(title).then((res) => {
-    dispatch(createTodoListAC(res.data.data.item.id, res.data.data.item.title));
+    dispatch(createTodoListAC(res.data.data.item));
   });
 };
 
