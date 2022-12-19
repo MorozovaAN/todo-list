@@ -1,12 +1,15 @@
-import styles from "../TodoList/TodoList.module.css";
-import { CustomCheckbox } from "../common/Checkbox/Checkbox";
-import { EditableSpan } from "../common/EditableSpan/EditabelSpan";
+import styles from "../TodoList.module.css";
+import { CustomCheckbox } from "../../../../../../components/common/Checkbox/Checkbox";
+import { EditableSpan } from "../../../../../../components/common/EditableSpan/EditabelSpan";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { memo } from "react";
-import { deleteTasksTC, updateTasksTC } from "../../state/reducer/TasksReducer";
-import { useAppDispatch } from "../../state/store";
-import { TaskStatuses, TaskType } from "../../api/todolist-api";
+import {
+  deleteTasksTC,
+  updateTasksTC,
+} from "../../../../../../state/reducer/TasksReducer";
+import { useAppDispatch } from "../../../../../../state/store";
+import { TaskStatuses, TaskType } from "../../../../../../api/todolist-api";
 
 type TaskPropsType = {
   task: TaskType;

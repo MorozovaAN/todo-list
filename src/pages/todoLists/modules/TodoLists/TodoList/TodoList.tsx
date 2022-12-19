@@ -1,14 +1,17 @@
 import React, { memo, useCallback, useEffect } from "react";
-import { AddItemForm } from "../common/AddItemForm/AddItemForm";
-import { EditableSpan } from "../common/EditableSpan/EditabelSpan";
-import { Task } from "../Task/Task";
-import { useAppDispatch } from "../../state/store";
-import { createTasksTC, getTasksTC } from "../../state/reducer/TasksReducer";
-import { TaskStatuses, TaskType } from "../../api/todolist-api";
+import { AddItemForm } from "../../../../../components/common/AddItemForm/AddItemForm";
+import { EditableSpan } from "../../../../../components/common/EditableSpan/EditabelSpan";
+import { Task } from "./Task/Task";
+import { useAppDispatch } from "../../../../../state/store";
+import {
+  createTasksTC,
+  getTasksTC,
+} from "../../../../../state/reducer/TasksReducer";
+import { TaskStatuses, TaskType } from "../../../../../api/todolist-api";
 import {
   changeTasksFilterAC,
   FilterValuesType,
-} from "../../state/reducer/TodoListsReducer";
+} from "../../../../../state/reducer/TodoListsReducer";
 import styles from "./TodoList.module.css";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";

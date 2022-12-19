@@ -20,13 +20,13 @@ const todoListsInitialState: TasksType = {};
 
 export const tasksReducer = (
   state = todoListsInitialState,
-  action: AppActionsType
+  action: TasksActionsType
 ): TasksType => {
   switch (action.type) {
     case "SET-TODOLISTS": {
-      let copyState = { ...state };
-      action.todoLists.forEach((tl) => {
-        copyState[tl.id] = [];
+      const copyState = { ...state };
+      action.todoLists.forEach((l) => {
+        copyState[l.id] = [];
       });
       return copyState;
     }
@@ -68,19 +68,6 @@ export const tasksReducer = (
       return state;
   }
 };
-
-export type TasksActionsType =
-  | createTaskACType
-  | deleteTaskACType
-  | createTodoListACType
-  | deleteTodoListACType
-  | setTodoListsACType
-  | setTasksACType
-  | updateTaskACType;
-type createTaskACType = ReturnType<typeof addTaskAC>;
-type deleteTaskACType = ReturnType<typeof deleteTaskAC>;
-type setTasksACType = ReturnType<typeof setTasksAC>;
-type updateTaskACType = ReturnType<typeof updateTaskAC>;
 
 export const addTaskAC = (task: TaskType) => {
   return {
@@ -171,3 +158,16 @@ export const updateTasksTC =
       });
     }
   };
+
+export type TasksActionsType =
+  | createTaskACType
+  | deleteTaskACType
+  | createTodoListACType
+  | deleteTodoListACType
+  | setTodoListsACType
+  | setTasksACType
+  | updateTaskACType;
+type createTaskACType = ReturnType<typeof addTaskAC>;
+type deleteTaskACType = ReturnType<typeof deleteTaskAC>;
+type setTasksACType = ReturnType<typeof setTasksAC>;
+type updateTaskACType = ReturnType<typeof updateTaskAC>;

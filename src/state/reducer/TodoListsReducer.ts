@@ -1,6 +1,5 @@
 import { todolistAPI, TodoListType } from "../../api/todolist-api";
 import { Dispatch } from "redux";
-import { AppActionsType } from "../store";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodoListDomainType = TodoListType & {
@@ -11,12 +10,12 @@ const initialState: TodoListsType = [];
 
 export const todoListsReducer = (
   state = initialState,
-  action: AppActionsType
+  action: TodoListsActionsType
 ): TodoListsType => {
   switch (action.type) {
     case "SET-TODOLISTS": {
-      return action.todoLists.map((tl: TodoListType) => ({
-        ...tl,
+      return action.todoLists.map((l: TodoListType) => ({
+        ...l,
         filter: "all",
       }));
     }
@@ -41,19 +40,6 @@ export const todoListsReducer = (
       return state;
   }
 };
-
-export type TodoListsActionsType =
-  | createTodoListACType
-  | editTodoListTitleACType
-  | deleteTodoListACType
-  | changeFilterACType
-  | setTodoListsACType;
-
-export type setTodoListsACType = ReturnType<typeof setTodoListsAC>;
-export type createTodoListACType = ReturnType<typeof createTodoListAC>;
-export type deleteTodoListACType = ReturnType<typeof deleteTodoListAC>;
-type editTodoListTitleACType = ReturnType<typeof changeTodoListTitleAC>;
-type changeFilterACType = ReturnType<typeof changeTasksFilterAC>;
 
 export const createTodoListAC = (todoList: TodoListType) => {
   return {
@@ -124,3 +110,16 @@ export const changeTodoListTitleTC =
       dispatch(changeTodoListTitleAC(todoListId, newTitle));
     });
   };
+
+export type TodoListsActionsType =
+  | createTodoListACType
+  | editTodoListTitleACType
+  | deleteTodoListACType
+  | changeFilterACType
+  | setTodoListsACType;
+
+export type setTodoListsACType = ReturnType<typeof setTodoListsAC>;
+export type createTodoListACType = ReturnType<typeof createTodoListAC>;
+export type deleteTodoListACType = ReturnType<typeof deleteTodoListAC>;
+type editTodoListTitleACType = ReturnType<typeof changeTodoListTitleAC>;
+type changeFilterACType = ReturnType<typeof changeTasksFilterAC>;
