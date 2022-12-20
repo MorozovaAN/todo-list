@@ -7,14 +7,16 @@ import {
 import {
   TodoListsActionsType,
   todoListsReducer,
-} from "./reducer/TodoListsReducer";
-import { TasksActionsType, tasksReducer } from "./reducer/TasksReducer";
+} from "./reducers/TodoListsReducer";
+import { TasksActionsType, tasksReducer } from "./reducers/TasksReducer";
 import thunkMiddleware, { ThunkDispatch } from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { AppActionsType, appReducer } from "./reducers/AppReducer";
 
 export const rootReducer = combineReducers({
   tasks: tasksReducer,
   todoLists: todoListsReducer,
+  app: appReducer,
 });
 
 export const store = legacy_createStore(
@@ -33,4 +35,7 @@ export const useAppDispatch = () => useDispatch<ThunkAppDispatchType>();
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> =
   useSelector;
 
-export type AppActionsType = TodoListsActionsType | TasksActionsType;
+export type AppRootActionsType =
+  | TodoListsActionsType
+  | TasksActionsType
+  | AppActionsType;

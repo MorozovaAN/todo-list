@@ -4,8 +4,9 @@ import { Button, TextField } from "@mui/material";
 
 type AddItemFormType = {
   callBack: (title: string) => void;
+  disabled?: boolean;
 };
-export const AddItemForm = memo(({ callBack }: AddItemFormType) => {
+export const AddItemForm = memo(({ callBack, disabled }: AddItemFormType) => {
   const [title, setTitle] = useState("");
   const [error, setError] = useState(false);
 
@@ -32,6 +33,7 @@ export const AddItemForm = memo(({ callBack }: AddItemFormType) => {
       <TextField
         onChange={inputOnChange}
         onKeyDown={onKeyDownAddTask}
+        disabled={disabled}
         value={title}
         error={error}
         label={error ? "Title is required" : ""}
@@ -41,6 +43,7 @@ export const AddItemForm = memo(({ callBack }: AddItemFormType) => {
 
       <Button
         onClick={buttonClickHandler}
+        disabled={disabled}
         className={s.button}
         style={{
           maxWidth: "25px",

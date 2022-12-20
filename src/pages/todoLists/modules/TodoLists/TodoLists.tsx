@@ -9,8 +9,8 @@ import {
   deleteTodoListTC,
   getTodoListsTC,
   TodoListsType,
-} from "../../../../state/reducer/TodoListsReducer";
-import { TasksType } from "../../../../state/reducer/TasksReducer";
+} from "../../../../state/reducers/TodoListsReducer";
+import { TasksType } from "../../../../state/reducers/TasksReducer";
 
 export const TodoLists = () => {
   const todoLists = useAppSelector<TodoListsType>((state) => state.todoLists);
@@ -49,15 +49,16 @@ export const TodoLists = () => {
       </Grid>
 
       <Grid container spacing={3}>
-        {todoLists.map((list) => {
+        {todoLists.map((l) => {
           return (
-            <Grid item key={list.id}>
+            <Grid item key={l.id}>
               <Paper style={{ padding: "10px" }}>
                 <TodoList
-                  todoListId={list.id}
-                  title={list.title}
-                  tasks={tasks[list.id]}
-                  filter={list.filter}
+                  todoListId={l.id}
+                  title={l.title}
+                  tasks={tasks[l.id]}
+                  filter={l.filter}
+                  entityStatus={l.entityStatus}
                   changeTodoListTitle={changeTodoListTitle}
                   deleteTodoList={deleteTodoList}
                 />

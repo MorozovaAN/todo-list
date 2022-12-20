@@ -5,13 +5,20 @@ import {
 } from "./TodoListsReducer";
 import { Dispatch } from "redux";
 import {
+  ResultStatus,
   TaskPriorities,
   tasksAPI,
   TaskStatuses,
   TaskType,
   UpdateTaskModelType,
 } from "../../api/todolist-api";
-import { AppActionsType, AppRootStateType } from "../store";
+import { AppRootActionsType, AppRootStateType } from "../store";
+import { AppActionsType, setStatusAC } from "./AppReducer";
+import {
+  handelServerAppError,
+  handelServerNetworkError,
+} from "../../utils/errorUtils";
+import axios, { AxiosError } from "axios";
 
 export type TasksType = {
   [key: string]: TaskType[];
@@ -103,37 +110,51 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
     tasks,
   } as const;
 };
+
 export const getTasksTC =
-  (todolistId: string) => (dispatch: Dispatch<AppActionsType>) => {
+  (todolistId: string) => (dispatch: Dispatch<AppRootActionsType>) => {
+    dispatch(setStatusAC("loading"));
     tasksAPI.getTasks(todolistId).then((res) => {
       dispatch(setTasksAC(todolistId, res.data.items));
+      dispatch(setStatusAC("succeeded"));
     });
   };
+
 export const deleteTasksTC =
   (todolistId: string, taskId: string) =>
-  (dispatch: Dispatch<AppActionsType>) => {
+  (dispatch: Dispatch<AppRootActionsType>) => {
+    dispatch(setStatusAC("loading"));
     tasksAPI.deleteTask(todolistId, taskId).then(() => {
       dispatch(deleteTaskAC(todolistId, taskId));
+      dispatch(setStatusAC("succeeded"));
     });
   };
 
 export const createTasksTC =
   (todolistId: string, title: string) =>
-  (dispatch: Dispatch<AppActionsType>) => {
-    tasksAPI.createTask(todolistId, title).then((res) => {
-      dispatch(addTaskAC(res.data.data.item));
-    });
+  async (dispatch: Dispatch<AppRootActionsType>) => {
+    dispatch(setStatusAC("loading"));
+
+    try {
+      const res = await tasksAPI.createTask(todolistId, title);
+
+      if (res.data.resultCode === ResultStatus.OK) {
+        dispatch(addTaskAC(res.data.data.item));
+        dispatch(setStatusAC("succeeded"));
+      } else {
+        handelServerAppError<{ item: TaskType }>(dispatch, res.data);
+      }
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>;
+      if (axios.isAxiosError(err)) {
+        const error = err.response?.data
+          ? err.response?.data.error
+          : err.message;
+        handelServerNetworkError(dispatch, error);
+      }
+    }
   };
 
-type UpdateTaskDomainModelType = {
-  title?: string;
-  description?: string;
-  completed?: boolean;
-  status?: TaskStatuses;
-  priority?: TaskPriorities;
-  startDate?: string;
-  deadline?: string;
-};
 export const updateTasksTC =
   (
     todolistId: string,
@@ -141,6 +162,7 @@ export const updateTasksTC =
     domainModel: UpdateTaskDomainModelType
   ) =>
   (dispatch: Dispatch<TasksActionsType>, getState: () => AppRootStateType) => {
+    dispatch(setStatusAC("loading"));
     const task = getState().tasks[todolistId].find((t) => t.id === taskId);
     if (task) {
       const model: UpdateTaskModelType = {
@@ -153,9 +175,22 @@ export const updateTasksTC =
         status: task.status,
         ...domainModel,
       };
-      tasksAPI.updateTask(todolistId, taskId, model).then((res) => {
-        dispatch(updateTaskAC(todolistId, taskId, res.data.data.item));
-      });
+      tasksAPI
+        .updateTask(todolistId, taskId, model)
+        .then((res) => {
+          if (res.data.resultCode === ResultStatus.OK) {
+            dispatch(updateTaskAC(todolistId, taskId, res.data.data.item));
+            dispatch(setStatusAC("succeeded"));
+          } else {
+            handelServerAppError<{ item: TaskType }>(dispatch, res.data);
+          }
+        })
+        .catch((e: AxiosError) => {
+          const error = e.response
+            ? (e.response.data as { error: string }).error
+            : e.message;
+          handelServerNetworkError(dispatch, error);
+        });
     }
   };
 
@@ -166,8 +201,20 @@ export type TasksActionsType =
   | deleteTodoListACType
   | setTodoListsACType
   | setTasksACType
-  | updateTaskACType;
+  | updateTaskACType
+  | AppActionsType;
+
 type createTaskACType = ReturnType<typeof addTaskAC>;
 type deleteTaskACType = ReturnType<typeof deleteTaskAC>;
 type setTasksACType = ReturnType<typeof setTasksAC>;
 type updateTaskACType = ReturnType<typeof updateTaskAC>;
+
+type UpdateTaskDomainModelType = {
+  title?: string;
+  description?: string;
+  completed?: boolean;
+  status?: TaskStatuses;
+  priority?: TaskPriorities;
+  startDate?: string;
+  deadline?: string;
+};

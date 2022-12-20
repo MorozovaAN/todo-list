@@ -7,7 +7,7 @@ import React, { memo } from "react";
 import {
   deleteTasksTC,
   updateTasksTC,
-} from "../../../../../../state/reducer/TasksReducer";
+} from "../../../../../../state/reducers/TasksReducer";
 import { useAppDispatch } from "../../../../../../state/store";
 import { TaskStatuses, TaskType } from "../../../../../../api/todolist-api";
 
