@@ -6,6 +6,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useAppSelector } from "../state/store";
 import { RequestStatusType } from "../state/reducers/AppReducer";
 import { ErrorSnackbar } from "../components/common/ErrorSnackbar/ErrorSnackbar";
+import { Login } from "../pages/login/Login";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 export const App = () => {
   const status = useAppSelector<RequestStatusType>((state) => state.app.status);
@@ -16,7 +18,13 @@ export const App = () => {
       <ButtonAppBar />
       {status === "loading" && <LinearProgress color="inherit" />}
 
-      <TodoLists />
+      <Routes>
+        <Route path="/" element={<TodoLists />} />
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>} />
+        <Route path="*" element={<Navigate to="/404" />} />
+      </Routes>
     </div>
   );
 };
