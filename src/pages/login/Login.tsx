@@ -8,6 +8,9 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
+import { loginTC } from "../../state/reducers/AuthReducer";
+import { useAppDispatch, useAppSelector } from "../../state/store";
+import { Navigate } from "react-router-dom";
 
 type FormikErrorType = {
   email?: string;
@@ -15,6 +18,9 @@ type FormikErrorType = {
   rememberMe?: boolean;
 };
 export const Login = () => {
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector<boolean>((state) => state.auth.isLoggedIn);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -42,10 +48,14 @@ export const Login = () => {
       return errors;
     },
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
+      dispatch(loginTC(values));
       formik.resetForm();
     },
   });
+
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Grid container justifyContent={"center"}>

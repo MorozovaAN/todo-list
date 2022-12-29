@@ -4,10 +4,10 @@ import { ResponseType } from "../api/todolist-api";
 
 export const handelServerNetworkError = (
   dispatch: ThunkAppDispatchType,
-  e: string
+  e: any //todo fix any
 ) => {
   dispatch(setStatusAC("failed"));
-  dispatch(setErrorAC(e));
+  dispatch(setErrorAC(e.message));
 };
 
 export const handelServerAppError = <T>(

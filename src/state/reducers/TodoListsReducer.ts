@@ -5,7 +5,10 @@ import {
 } from "../../api/todolist-api";
 import { Dispatch } from "redux";
 import { AppActionsType, RequestStatusType, setStatusAC } from "./AppReducer";
-import { handelServerAppError } from "../../utils/errorUtils";
+import {
+  handelServerAppError,
+  handelServerNetworkError,
+} from "../../utils/errorUtils";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodoListDomainType = TodoListType & {
@@ -108,10 +111,15 @@ export const changeTodoListEntityStatusAC = (
 export const getTodoListsTC =
   () => (dispatch: Dispatch<TodoListsActionsType>) => {
     dispatch(setStatusAC("loading"));
-    todolistAPI.getTodoLists().then((res) => {
-      dispatch(setTodoListsAC(res.data));
-      dispatch(setStatusAC("succeeded"));
-    });
+    todolistAPI
+      .getTodoLists()
+      .then((res) => {
+        dispatch(setTodoListsAC(res.data));
+        dispatch(setStatusAC("succeeded"));
+      })
+      .catch((error) => {
+        handelServerNetworkError(dispatch, error);
+      });
   };
 
 export const createTodoListTC =

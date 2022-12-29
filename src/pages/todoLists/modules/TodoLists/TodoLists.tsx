@@ -11,14 +11,20 @@ import {
   TodoListsType,
 } from "../../../../state/reducers/TodoListsReducer";
 import { TasksType } from "../../../../state/reducers/TasksReducer";
+import { Navigate } from "react-router-dom";
 
 export const TodoLists = () => {
+  const isLoggedIn = useAppSelector<boolean>((state) => state.auth.isLoggedIn);
   const todoLists = useAppSelector<TodoListsType>((state) => state.todoLists);
   const tasks = useAppSelector<TasksType>((state) => state.tasks);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getTodoListsTC());
+    if (isLoggedIn) {
+      dispatch(getTodoListsTC());
+    } else {
+      return;
+    }
   }, []);
 
   const createTodoList = useCallback(
@@ -41,6 +47,10 @@ export const TodoLists = () => {
     },
     [dispatch]
   );
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Container fixed>

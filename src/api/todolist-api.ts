@@ -7,6 +7,20 @@ const instance = axios.create({
     "API-KEY": "c1452ba1-bc90-491b-9609-a361313ad1cf",
   },
 });
+export const authAPI = {
+  login(data: LoginDataType) {
+    return instance.post<
+      LoginDataType,
+      AxiosResponse<ResponseType<{ userId: number }>>
+    >("auth/login", data);
+  },
+  logout() {
+    return instance.delete<ResponseType>("auth/login");
+  },
+  me() {
+    return instance.get<ResponseType<UserType>>("/auth/me");
+  },
+};
 
 export const todolistAPI = {
   getTodoLists() {
@@ -72,7 +86,7 @@ export type TaskType = {
 export type ResponseType<T = {}> = {
   resultCode: number;
   messages: string[];
-  fieldsError: string[];
+  fieldsError?: string[];
   data: T;
 };
 
@@ -112,3 +126,18 @@ export enum ResultStatus {
   ERROR = 1,
   CAPTCHA = 10,
 }
+
+export type LoginDataType = {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+  captcha?: boolean;
+};
+
+export type UserType = {
+  id: number;
+
+  email: string;
+
+  login: string;
+};
