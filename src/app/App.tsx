@@ -1,25 +1,26 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { ButtonAppBar } from "../components/common/ButtonAppBar/ButtonAppBar";
-import { TodoLists } from "../pages/todoLists/modules/TodoLists/TodoLists";
+import { ButtonAppBar } from "../common/components/ButtonAppBar/ButtonAppBar";
+import { TodoLists } from "../features/todoLists/modules/TodoLists/TodoLists";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useAppDispatch, useAppSelector } from "../state/store";
-import { RequestStatusType } from "../state/reducers/AppReducer";
-import { ErrorSnackbar } from "../components/common/ErrorSnackbar/ErrorSnackbar";
-import { Login } from "../pages/login/Login";
+import { ErrorSnackbar } from "../common/components/ErrorSnackbar/ErrorSnackbar";
+import { Login } from "../features/auth/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { meTC } from "../state/reducers/AuthReducer";
 import CircularProgress from "@mui/material/CircularProgress";
+import { me } from "../features/auth/authSlice/authThunk";
+import { useAppSelector } from "../common/hooks/AppSelector";
+import { useAppDispatch } from "../common/hooks/AppDispatch";
+import { getTodoLists } from "../features/todoLists/todoListsSlice/todoListsThunk";
+import { isInitializedSelector, statusSelector } from "./appSlice/appSelectors";
 
 export const App = () => {
-  const status = useAppSelector<RequestStatusType>((state) => state.app.status);
-  const isInitialized = useAppSelector<boolean>(
-    (state) => state.app.isInitialized
-  );
+  const status = useAppSelector(statusSelector);
+  const isInitialized = useAppSelector(isInitializedSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(meTC());
+    dispatch(me());
+    dispatch(getTodoLists());
   }, []);
 
   return isInitialized ? (
