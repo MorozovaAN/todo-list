@@ -1,4 +1,4 @@
-import { createAsyncThunk, Dispatch } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatchType } from "../../../../../../../common/hooks/AppDispatch";
 import {
   setError,
@@ -97,32 +97,29 @@ export const updateTasksTC = createAsyncThunk<
   "tasks/updateTask",
   async ({ todoListId, taskId, domainModel }, { dispatch, getState }) => {
     dispatch(setStatus("loading"));
+    // @ts-ignore
+    const task = getState().tasks[todoListId].find((t) => t.id === taskId);
+    const model: UpdateTaskModelType = {
+      title: task.title,
+      description: task.description,
+      completed: task.completed,
+      priority: task.priority,
+      startDate: task.startDate,
+      deadline: task.deadline,
+      status: task.status,
+      ...domainModel,
+    };
 
     try {
-      // @ts-ignore
-      const task = getState().tasks[todoListId].find((t) => t.id === taskId);
-      if (task) {
-        const model: UpdateTaskModelType = {
-          title: task.title,
-          description: task.description,
-          completed: task.completed,
-          priority: task.priority,
-          startDate: task.startDate,
-          deadline: task.deadline,
-          status: task.status,
-          ...domainModel,
-        };
-        const res = tasksAPI.updateTask(todoListId, taskId, model);
-        // @ts-ignore  //todo fix
-        if (res.data.resultCode === ResultStatus.OK) {
-          // @ts-ignore //todo fix
-          dispatch(
-            // @ts-ignore //todo fix
-            updateTask({ todoListId, taskId, domainModel: res.data.data.item })
-          );
-        }
+      const res = await tasksAPI.updateTask(todoListId, taskId, model);
+
+      if (res.data.resultCode === ResultStatus.OK) {
+        dispatch(
+          updateTask({ todoListId, taskId, domainModel: res.data.data.item })
+        );
+        dispatch(setStatus("succeeded"));
       } else {
-        //handelServerAppError<{ item: TaskType }>(dispatch, res.data); //todo fix
+        handelServerAppError<{ item: TaskType }>(dispatch, res.data);
       }
     } catch (error) {
       const err = error as Error | AxiosError<{ error: string }>;
