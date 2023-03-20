@@ -24,11 +24,11 @@ import {
 import axios, { AxiosError } from "axios";
 import { AppRootStateType } from "../../../../../../../store/store";
 
-export const getTasksTC = createAsyncThunk<
+export const fetchTasks = createAsyncThunk<
   void,
   string,
   { dispatch: AppDispatchType }
->("tasks/getTasks", async (todolistId, { dispatch }) => {
+>("tasks/fetchTasks", async (todolistId, { dispatch }) => {
   dispatch(setStatus("loading"));
 
   try {
@@ -92,13 +92,16 @@ export const updateTasksTC = createAsyncThunk<
     taskId: string;
     domainModel: UpdateTaskDomainModelType;
   },
-  { dispatch: AppDispatchType; getState: () => AppRootStateType }
+  { dispatch: AppDispatchType; state: AppRootStateType }
 >(
   "tasks/updateTask",
   async ({ todoListId, taskId, domainModel }, { dispatch, getState }) => {
     dispatch(setStatus("loading"));
-    // @ts-ignore
-    const task = getState().tasks[todoListId].find((t) => t.id === taskId);
+
+    const task = getState().tasks[todoListId].find(
+      (t) => t.id === taskId
+    ) as TaskType;
+
     const model: UpdateTaskModelType = {
       title: task.title,
       description: task.description,
