@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect } from "react";
 import { AddItemForm } from "../../../../../common/components/AddItemForm/AddItemForm";
 import { EditableSpan } from "../../../../../common/components/EditableSpan/EditabelSpan";
 import { Task } from "./Task/Task";
-import { createTasksTC, getTasksTC } from "./Task/tasksSlice/tasksThunk";
+import { createTasksTC, fetchTasks } from "./Task/tasksSlice/tasksThunk";
 import { TaskStatuses, TaskType } from "../../../../../api/todolist-api";
 import styles from "./TodoList.module.css";
 import { Button, IconButton } from "@mui/material";
@@ -37,7 +37,7 @@ export const TodoList = memo((props: TodoListPropsType) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getTasksTC(todoListId));
+    dispatch(fetchTasks(todoListId));
   }, []);
 
   let tasksForRender;
