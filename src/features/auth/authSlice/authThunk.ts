@@ -10,7 +10,7 @@ import {
   handelServerNetworkError,
 } from "../../../common/utils/errorUtils";
 import { setIsLoggedIn } from "./authSlice";
-import { AppDispatchType } from "../../../common/hooks/AppDispatch";
+import { AppDispatchType } from "../../../common/hooks/useTypedDispatch";
 
 export const me = createAsyncThunk<
   void,
@@ -38,7 +38,7 @@ export const login = createAsyncThunk<
   { isLoggedIn: boolean },
   LoginDataType,
   { dispatch: AppDispatchType }
->("auth/auth", async (data: LoginDataType, { dispatch }) => {
+>("auth/login", async (data: LoginDataType, { dispatch }) => {
   dispatch(setStatus("loading"));
 
   try {

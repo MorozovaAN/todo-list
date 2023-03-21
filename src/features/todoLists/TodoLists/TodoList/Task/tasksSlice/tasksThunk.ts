@@ -1,48 +1,47 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AppDispatchType } from "../../../../../../../common/hooks/AppDispatch";
-import {
-  setError,
-  setStatus,
-} from "../../../../../../../app/appSlice/appSlice";
+import { AppDispatchType } from "../../../../../../common/hooks/useTypedDispatch";
+import { setStatus } from "../../../../../../app/appSlice/appSlice";
 import {
   ResultStatus,
   tasksAPI,
   TaskType,
   UpdateTaskModelType,
-} from "../../../../../../../api/todolist-api";
+} from "../../../../../../api/todolist-api";
 import {
   handelServerAppError,
   handelServerNetworkError,
-} from "../../../../../../../common/utils/errorUtils";
+} from "../../../../../../common/utils/errorUtils";
 import {
   createTask,
   deleteTask,
-  setTasks,
   updateTask,
   UpdateTaskDomainModelType,
 } from "./tasksSlice";
 import axios, { AxiosError } from "axios";
-import { AppRootStateType } from "../../../../../../../store/store";
+import { AppRootStateType } from "../../../../../../store/store";
 
 export const fetchTasks = createAsyncThunk<
-  void,
+  { todolistId: string; tasks: TaskType[] },
   string,
   { dispatch: AppDispatchType }
 >("tasks/fetchTasks", async (todolistId, { dispatch }) => {
   dispatch(setStatus("loading"));
+  const res = await tasksAPI.getTasks(todolistId);
+  dispatch(setStatus("succeeded"));
+  return { todolistId, tasks: res.data.items };
 
-  try {
-    const res = await tasksAPI.getTasks(todolistId);
-    if (res.data.error === null) {
-      dispatch(setTasks({ todolistId, tasks: res.data.items }));
-      dispatch(setStatus("succeeded"));
-    } else {
-      dispatch(setError(res.data.error));
-      dispatch(setStatus("failed"));
-    }
-  } catch (error) {
-    handelServerNetworkError(dispatch, error);
-  }
+  //   const res = await tasksAPI.getTasks(todolistId);
+  //   return { todolistId, tasks: res.data.items };
+  //   // if (res.data.error === null) {
+  //   //   dispatch(setTasks({ todolistId, tasks: res.data.items }));
+  //   //   dispatch(setStatus("succeeded"));
+  //   // } else {
+  //   //   dispatch(setError(res.data.error));
+  //   //   dispatch(setStatus("failed"));
+  //   // }
+  // } catch (error) {
+  //   handelServerNetworkError(dispatch, error);
+  // }
 });
 
 export const deleteTasksTC = createAsyncThunk<

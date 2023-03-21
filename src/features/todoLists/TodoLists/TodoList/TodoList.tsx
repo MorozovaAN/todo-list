@@ -1,18 +1,18 @@
 import React, { memo, useCallback, useEffect } from "react";
-import { AddItemForm } from "../../../../../common/components/AddItemForm/AddItemForm";
-import { EditableSpan } from "../../../../../common/components/EditableSpan/EditabelSpan";
+import { AddItemForm } from "../../../../common/components/AddItemForm/AddItemForm";
+import { EditableSpan } from "../../../../common/components/EditableSpan/EditabelSpan";
 import { Task } from "./Task/Task";
 import { createTasksTC, fetchTasks } from "./Task/tasksSlice/tasksThunk";
-import { TaskStatuses, TaskType } from "../../../../../api/todolist-api";
+import { TaskStatuses, TaskType } from "../../../../api/todolist-api";
 import styles from "./TodoList.module.css";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { RequestStatusType } from "../../../../../app/appSlice/appSlice";
+import { RequestStatusType } from "../../../../app/appSlice/appSlice";
 import {
   FilterValuesType,
   updateFilter,
-} from "../../../todoListsSlice/todoListsSlicer";
-import { useAppDispatch } from "../../../../../common/hooks/AppDispatch";
+} from "../../todoListsSlice/todoListsSlicer";
+import { useTypedDispatch } from "../../../../common/hooks/useTypedDispatch";
 
 type TodoListPropsType = {
   todoListId: string;
@@ -34,7 +34,7 @@ export const TodoList = memo((props: TodoListPropsType) => {
     changeTodoListTitle,
     deleteTodoList,
   } = props;
-  const dispatch = useAppDispatch();
+  const dispatch = useTypedDispatch();
 
   useEffect(() => {
     dispatch(fetchTasks(todoListId));

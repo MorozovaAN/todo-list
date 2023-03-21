@@ -1,13 +1,13 @@
 import styles from "../TodoList.module.css";
-import { CustomCheckbox } from "../../../../../../common/components/Checkbox/Checkbox";
-import { EditableSpan } from "../../../../../../common/components/EditableSpan/EditabelSpan";
+import { CustomCheckbox } from "../../../../../common/components/Checkbox/Checkbox";
+import { EditableSpan } from "../../../../../common/components/EditableSpan/EditabelSpan";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { memo } from "react";
-import { TaskStatuses, TaskType } from "../../../../../../api/todolist-api";
+import { TaskStatuses, TaskType } from "../../../../../api/todolist-api";
 // @ts-ignore
 import { deleteTasksTC, updateTasksTC } from "./tasksSlice/tasksThunk";
-import { useAppDispatch } from "../../../../../../common/hooks/AppDispatch";
+import { useTypedDispatch } from "../../../../../common/hooks/useTypedDispatch";
 
 type TaskPropsType = {
   task: TaskType;
@@ -17,7 +17,7 @@ type TaskPropsType = {
 export const Task = memo(({ task, todoListId }: TaskPropsType) => {
   const { id, title, status, ...restTaskProps } = task;
   const checkedTask = status === TaskStatuses.Completed;
-  const dispatch = useAppDispatch();
+  const dispatch = useTypedDispatch();
 
   const changeTaskStatusHandler = (checked: boolean) => {
     const newStatus = checked ? TaskStatuses.Completed : TaskStatuses.New;

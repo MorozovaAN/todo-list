@@ -9,8 +9,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import { Navigate } from "react-router-dom";
-import { useAppSelector } from "../../common/hooks/AppSelector";
-import { useAppDispatch } from "../../common/hooks/AppDispatch";
+import { useTypedSelector } from "../../common/hooks/useTypedSelector";
+import { useTypedDispatch } from "../../common/hooks/useTypedDispatch";
 import { login } from "./authSlice/authThunk";
 
 type FormikErrorType = {
@@ -20,8 +20,8 @@ type FormikErrorType = {
 };
 
 export const Login = () => {
-  const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useTypedDispatch();
+  const isLoggedIn = useTypedSelector((state) => state.auth.isLoggedIn);
 
   const formik = useFormik({
     initialValues: {
@@ -30,7 +30,6 @@ export const Login = () => {
       rememberMe: false,
     },
     validate: (values) => {
-      //todo fix validate - lib yup
       const errors: FormikErrorType = {};
 
       if (!values.email) {
@@ -49,20 +48,18 @@ export const Login = () => {
 
       return errors;
     },
-    onSubmit: async (values, formikHelpers) => {
-      const res = await dispatch(login(values));
-      formikHelpers.setFieldError("email", "fake error");
-      formik.resetForm();
+    onSubmit: async (values) => {
+      dispatch(login(values));
     },
   });
 
   if (isLoggedIn) {
-    return <Navigate to="/" />;
+    return <Navigate to="/todo-lists-app" />;
   }
 
   return (
-    <Grid container justifyContent={"center"}>
-      <Grid item justifyContent={"center"}>
+    <Grid container justifyContent="center">
+      <Grid item justifyContent="center">
         <FormControl>
           <FormLabel>
             <p>
@@ -103,7 +100,7 @@ export const Login = () => {
               )}
 
               <FormControlLabel
-                label={"Remember me"}
+                label="Remember me"
                 control={
                   <Checkbox
                     {...formik.getFieldProps("rememberMe")}
@@ -111,7 +108,7 @@ export const Login = () => {
                   />
                 }
               />
-              <Button type={"submit"} variant={"contained"} color={"primary"}>
+              <Button type="submit" variant="contained" color="primary">
                 Login
               </Button>
             </FormGroup>

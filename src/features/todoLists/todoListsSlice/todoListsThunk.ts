@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ResultStatus, todolistAPI } from "../../../api/todolist-api";
 import { setStatus } from "../../../app/appSlice/appSlice";
-import { AppDispatchType } from "../../../common/hooks/AppDispatch";
+import { AppDispatchType } from "../../../common/hooks/useTypedDispatch";
 import {
   createTodoList,
   deleteTodoList,

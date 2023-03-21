@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { login } from "./authThunk";
 
 const authSlice = createSlice({
   name: "auth",
@@ -9,11 +10,11 @@ const authSlice = createSlice({
     },
   },
 
-  /*  extraReducers: (builder) => {
-    builder.addCase(auth.fulfilled, (state, action) => {
+  extraReducers: (builder) => {
+    builder.addCase(login.fulfilled, (state, action) => {
       state.isLoggedIn = action.payload.isLoggedIn;
     });
-  },*/
+  },
 });
 
 export const { setIsLoggedIn } = authSlice.actions;

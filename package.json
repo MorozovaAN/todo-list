@@ -1,6 +1,6 @@
 {
   "name": "it-incubator-todolist-ts",
-  "homepage": "https://MorozovaAN.github.io/todo-list",
+  "homepage": "https://MorozovaAN.github.io/todo-lists-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

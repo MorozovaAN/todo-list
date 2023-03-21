@@ -6,13 +6,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useAppDispatch } from "../../hooks/AppDispatch";
-import { useAppSelector } from "../../hooks/AppSelector";
+import { useTypedDispatch } from "../../hooks/useTypedDispatch";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { logout } from "../../../features/auth/authSlice/authThunk";
 
 export const ButtonAppBar = () => {
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-  const dispatch = useAppDispatch();
+  const isLoggedIn = useTypedSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useTypedDispatch();
   const logOut = () => {
     dispatch(logout());
   };

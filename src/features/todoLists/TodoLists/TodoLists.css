@@ -1,0 +1,11 @@
+.todoListsContainer {
+  display: flex;
+  column-gap: 26px;
+}
+
+.addItem {
+  padding: 10px;
+  width: 276px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
