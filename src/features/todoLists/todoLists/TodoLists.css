@@ -1,11 +1,19 @@
-.todoListsContainer {
+.todoLists {
   display: flex;
   column-gap: 26px;
 }
 
-.addItem {
+.todoLists__add-item {
   padding: 10px;
   width: 276px;
   flex-shrink: 0;
   box-sizing: border-box;
+}
+
+.todoLists__todoList-wrapper {
+  padding: 10px;
+}
+
+.todoLists__todoList-wrapper {
+  width: 280px;
 }

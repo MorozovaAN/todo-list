@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { ButtonAppBar } from "../common/components/buttonAppBar/ButtonAppBar";
+import { Header } from "../common/components/header/Header";
 import { TodoLists } from "../features/todoLists/todoLists/TodoLists";
 import { ErrorSnackbar } from "../common/components/errorSnackbar/ErrorSnackbar";
 import { Login } from "../features/auth/Login";
@@ -25,7 +25,7 @@ export const App = () => {
   return isInitialized ? (
     <div>
       <ErrorSnackbar />
-      <ButtonAppBar />
+      <Header />
 
       {status === "loading" && <LinearLoading />}
 

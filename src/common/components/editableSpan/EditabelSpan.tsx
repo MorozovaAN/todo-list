@@ -1,44 +1,39 @@
-import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react";
+import React, { FC, useState } from "react";
+import "./EditableSpan.css";
 
-type EditableSpanType = {
+type EditableSpanPropsType = {
   callBack: (newTitle: string) => void;
   title: string;
 };
-export const EditableSpan: FC<EditableSpanType> = ({ title, callBack }) => {
+
+export const EditableSpan: FC<EditableSpanPropsType> = ({
+  title,
+  callBack,
+}) => {
   const [newTitle, setNewTitle] = useState(title);
-  const [edit, setEdit] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
-  const editHandler = () => {
-    setEdit(!edit);
+  const changeTitleHandler = () => {
+    newTitle !== title && callBack(newTitle.trim());
+    setEditMode(false);
   };
 
-  const onChangeHandle = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-    setNewTitle(value);
-  };
-
-  const KeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      addNewTaskTitle();
-    }
-  };
-  const addNewTaskTitle = () => {
-    if (newTitle !== "") {
-      editHandler();
-      callBack(newTitle);
-    }
-  };
-
-  return edit ? (
+  return editMode ? (
     <input
       type="text"
+      className="editable-span__input"
       value={newTitle}
-      onChange={onChangeHandle}
-      onKeyUp={KeyPressHandler}
-      onBlur={addNewTaskTitle}
+      onChange={(e) => setNewTitle(e.currentTarget.value)}
+      onKeyUp={(e) => e.key === "Enter" && changeTitleHandler()}
+      onBlur={changeTitleHandler}
       autoFocus
     />
   ) : (
-    <span onDoubleClick={editHandler}>{title}</span>
+    <span
+      className="editable-span__title"
+      onDoubleClick={() => setEditMode(!editMode)}
+    >
+      {title}
+    </span>
   );
 };

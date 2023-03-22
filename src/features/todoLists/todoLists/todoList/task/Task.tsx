@@ -1,4 +1,3 @@
-import styles from "../TodoList.module.css";
 import { CustomCheckbox } from "../../../../../common/components/checkbox/Checkbox";
 import { EditableSpan } from "../../../../../common/components/editableSpan/EditabelSpan";
 import { IconButton } from "@mui/material";
@@ -7,6 +6,7 @@ import React, { memo } from "react";
 import { TaskStatuses, TaskType } from "../../../../../api/todolist-api";
 import { useAction } from "../../../../../common/hooks/useActions";
 import { tasksActions } from "./index";
+import "./Task.css";
 
 type TaskPropsType = {
   task: TaskType;
@@ -37,7 +37,11 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
   };
 
   return (
-    <li className={status === TaskStatuses.Completed ? styles.isDone : ""}>
+    <li
+      className={
+        status === TaskStatuses.Completed ? "task task--isDone" : "task"
+      }
+    >
       <CustomCheckbox
         callBack={changeTaskStatusHandler}
         checked={checkedTask}
@@ -47,7 +51,7 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
 
       <IconButton
         onClick={() => deleteTasksTC({ todoListId, taskId: id })}
-        className={styles.btnDelete}
+        className="task__btn-delete"
         aria-label="delete"
         size="small"
       >

@@ -29,20 +29,16 @@ export const TodoLists = () => {
     createTodoListTC(title);
   }, []);
 
-  if (!isLoggedIn) {
-    return <Navigate to="/login" />;
-  }
-
-  return (
-    <div className="todoListsContainer">
-      <Paper classes={{ root: "addItem" }}>
-        <AddItemForm callBack={createTodoList} />
+  return isLoggedIn ? (
+    <div className="todoLists">
+      <Paper classes={{ root: "todoLists__add-item" }}>
+        <AddItemForm callback={createTodoList} />
       </Paper>
 
       {todoLists.map((l) => {
         return (
           <div key={l.id}>
-            <Paper style={{ padding: "10px" }}>
+            <Paper className="todoLists__todoList-wrapper">
               <TodoList
                 todoListId={l.id}
                 title={l.title}
@@ -55,5 +51,7 @@ export const TodoLists = () => {
         );
       })}
     </div>
+  ) : (
+    <Navigate to="/login" />
   );
 };

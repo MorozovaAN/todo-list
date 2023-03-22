@@ -3,8 +3,7 @@ import { AddItemForm } from "../../../../common/components/addItemForm/AddItemFo
 import { EditableSpan } from "../../../../common/components/editableSpan/EditabelSpan";
 import { Task } from "./task/Task";
 import { createTasksTC, fetchTasks } from "./task/tasksSlice/tasksThunk";
-import { TaskStatuses, TaskType } from "../../../../api/todolist-api";
-import styles from "./TodoList.module.css";
+import { TaskType } from "../../../../api/todolist-api";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { RequestStatusType } from "../../../../app/appSlice/appSlice";
@@ -20,6 +19,8 @@ import { useAction } from "../../../../common/hooks/useActions";
 import { todoListsActions } from "../../index";
 import { tasksActions } from "./task";
 import { useTypedDispatch } from "../../../../common/hooks/useTypedDispatch";
+import { tasksFilter } from "../../../../common/utils/tasksFilter";
+import "./TodoList.css";
 
 type TodoListPropsType = {
   todoListId: string;
@@ -34,21 +35,8 @@ export const TodoList = memo<TodoListPropsType>(
     const { deleteTodoListTC, updateTodoListTitleTC } =
       useAction(todoListsActions);
     const { fetchTasks, createTasksTC } = useAction(tasksActions);
+    const tasksForRender = tasksFilter(tasks, filter);
     const dispatch = useTypedDispatch();
-    let tasksForRender;
-
-    switch (filter) {
-      case "completed":
-        tasksForRender = tasks.filter((t) => t.status === TaskStatuses.New);
-        break;
-      case "active":
-        tasksForRender = tasks.filter(
-          (t) => t.status === TaskStatuses.Completed
-        );
-        break;
-      default:
-        tasksForRender = tasks;
-    }
 
     useEffect(() => {
       fetchTasks(todoListId);
@@ -71,13 +59,13 @@ export const TodoList = memo<TodoListPropsType>(
 
     return (
       <div>
-        <div className={styles.titleContainer}>
+        <div className="todoList__title-wrapper">
           <EditableSpan callBack={changeTodoListTitle} title={title} />
 
           <IconButton
             onClick={deleteTodoList}
             disabled={entityStatus === "loading"}
-            className={styles.btnDeleteTodoList}
+            className="todoList__btn--delete"
             aria-label="delete"
             size="small"
           >
@@ -86,21 +74,23 @@ export const TodoList = memo<TodoListPropsType>(
         </div>
 
         <AddItemForm
-          callBack={(title: string) => createTasksTC({ todoListId, title })}
+          callback={(title: string) => createTasksTC({ todoListId, title })}
           disabled={entityStatus === "loading"}
         />
 
-        <ul className={styles.tasksLists}>
+        <ul className="todoList__tasks">
           {tasks.length ? (
             tasksForRender.map((t) => (
               <Task key={t.id} todoListId={todoListId} task={t} />
             ))
           ) : (
-            <span>Your task list is empty</span>
+            <p className="todoList__empty-list-title">
+              Your task list is empty
+            </p>
           )}
         </ul>
 
-        <div className={styles.buttons}>
+        <div className="todoList__buttons-wrapper">
           <Button
             onClick={changeTasksFilterHandler("all")}
             variant={filter === "all" ? "contained" : "outlined"}

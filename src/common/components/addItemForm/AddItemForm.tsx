@@ -1,62 +1,61 @@
-import React, { ChangeEvent, KeyboardEvent, memo, useState } from "react";
-import s from "./AddItemForm.module.css";
+import React, { ChangeEvent, memo, useState } from "react";
+import "./AddItemForm.css";
 import { Button, TextField } from "@mui/material";
 
-type AddItemFormType = {
-  callBack: (title: string) => void;
+type AddItemFormPropsType = {
+  callback: (title: string) => void;
   disabled?: boolean;
 };
-export const AddItemForm = memo(({ callBack, disabled }: AddItemFormType) => {
-  const [title, setTitle] = useState("");
-  const [error, setError] = useState(false);
 
-  const inputOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (error) setError(false);
-    setTitle(e.currentTarget.value);
-  };
+export const AddItemForm = memo(
+  ({ callback: callback, disabled }: AddItemFormPropsType) => {
+    const [title, setTitle] = useState("");
+    const [error, setError] = useState(false);
 
-  const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") buttonClickHandler();
-  };
+    const inputOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      error && setError(false);
+      setTitle(e.currentTarget.value);
+    };
 
-  const buttonClickHandler = () => {
-    if (title.trim() !== "") {
-      callBack(title.trim());
-      setTitle("");
-    } else {
-      setError(true);
-    }
-  };
+    const addItemHandler = () => {
+      const newTitle = title.trim();
 
-  return (
-    <div className={s.container}>
-      <TextField
-        onChange={inputOnChange}
-        onKeyDown={onKeyDownAddTask}
-        disabled={disabled}
-        value={title}
-        error={error}
-        label={error ? "Title is required" : ""}
-        id="standard-basic"
-        variant="standard"
-      />
+      if (newTitle) {
+        callback(newTitle);
+        setTitle("");
+      } else {
+        setError(true);
+      }
+    };
 
-      <Button
-        onClick={buttonClickHandler}
-        disabled={disabled}
-        className={s.button}
-        style={{
-          maxWidth: "25px",
-          maxHeight: "25px",
-          minWidth: "25px",
-          minHeight: "25px",
-          marginLeft: "10px",
-        }}
-        color="success"
-        variant="contained"
-      >
-        +
-      </Button>
-    </div>
-  );
-});
+    return (
+      <div className="add-item-form">
+        <TextField
+          onChange={inputOnChangeHandler}
+          onKeyDown={(e) => e.key === "Enter" && addItemHandler()}
+          onBlur={() => setError(false)}
+          label={error ? "Title is required" : ""}
+          classes={{ root: "add-item-form__input" }}
+          disabled={disabled}
+          value={title}
+          error={error}
+          placeholder="write your task"
+          id="standard-basic"
+          variant="standard"
+        />
+
+        <Button
+          onClick={addItemHandler}
+          disabled={disabled || !title.trim()}
+          classes={{
+            root: "add-item-form__button",
+          }}
+          color="success"
+          variant="contained"
+        >
+          +
+        </Button>
+      </div>
+    );
+  }
+);

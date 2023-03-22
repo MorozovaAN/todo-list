@@ -1,0 +1,13 @@
+.task {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  align-items: center;
+}
+
+.task--isDone {
+  text-decoration: line-through;
+  color: #9d9d9d;
+}

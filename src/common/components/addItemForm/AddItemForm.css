@@ -1,0 +1,19 @@
+.add-item-form {
+  display: flex;
+  align-items: center;
+}
+
+.add-item-form .add-item-form__button {
+  align-self: flex-end;
+  max-width: 25px;
+  max-height: 25px;
+  min-width: 25px;
+  min-height: 25px;
+  margin-left: 10px;
+}
+
+.add-item-form__input {
+  width: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+}

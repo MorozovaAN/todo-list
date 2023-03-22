@@ -1,0 +1,12 @@
+.editable-span__title {
+  white-space: break-spaces;
+  word-wrap: break-word;
+  overflow: hidden;
+  width: 100%;
+}
+
+.editable-span__input {
+  width: 100%;
+  padding: 4px 6px;
+  box-sizing: border-box;
+}

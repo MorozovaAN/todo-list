@@ -1,0 +1,32 @@
+.todoList__title-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.todoList__title-wrapper span,
+.todoList__title-wrapper input {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.todoList__btn--delete {
+  margin-left: 10px;
+}
+
+.todoList__tasks {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.todoList__empty-list-title {
+  text-align: center;
+}
+
+.todoList__buttons-wrapper {
+  display: flex;
+  gap: 10px;
+}

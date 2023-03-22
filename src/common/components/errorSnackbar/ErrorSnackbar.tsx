@@ -4,7 +4,7 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useTypedDispatch } from "../../hooks/useTypedDispatch";
 import { setError } from "../../../app/appSlice/appSlice";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { errorSelector } from "../../../app/appSlice/appSelectors";
+import { appSelectors } from "../../../app";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -14,7 +14,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export const ErrorSnackbar = () => {
-  const error = useTypedSelector(errorSelector);
+  const error = useTypedSelector(appSelectors.errorSelector);
   const dispatch = useTypedDispatch();
 
   const handleClose = (
