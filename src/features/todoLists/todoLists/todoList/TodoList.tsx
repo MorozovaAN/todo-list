@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useEffect } from "react";
-import { AddItemForm } from "../../../../common/components/AddItemForm/AddItemForm";
-import { EditableSpan } from "../../../../common/components/EditableSpan/EditabelSpan";
-import { Task } from "./Task/Task";
-import { createTasksTC, fetchTasks } from "./Task/tasksSlice/tasksThunk";
+import { AddItemForm } from "../../../../common/components/addItemForm/AddItemForm";
+import { EditableSpan } from "../../../../common/components/editableSpan/EditabelSpan";
+import { Task } from "./task/Task";
+import { createTasksTC, fetchTasks } from "./task/tasksSlice/tasksThunk";
 import { TaskStatuses, TaskType } from "../../../../api/todolist-api";
 import styles from "./TodoList.module.css";
 import { Button, IconButton } from "@mui/material";
@@ -52,14 +52,6 @@ export const TodoList = memo((props: TodoListPropsType) => {
       tasksForRender = tasks;
   }
 
-  const tasksItem = tasks.length ? (
-    tasksForRender.map((t) => {
-      return <Task key={t.id} todoListId={todoListId} task={t} />;
-    })
-  ) : (
-    <span>Your task list is empty</span>
-  );
-
   const changeTasksFilterHandler = (filter: FilterValuesType) => {
     return () => dispatch(updateFilter({ todoListId, filter }));
   };
@@ -99,7 +91,16 @@ export const TodoList = memo((props: TodoListPropsType) => {
         disabled={entityStatus === "loading"}
       />
 
-      <ul className={styles.tasksLists}>{tasksItem}</ul>
+      <ul className={styles.tasksLists}>
+        {tasks.length ? (
+          tasksForRender.map((t) => (
+            <Task key={t.id} todoListId={todoListId} task={t} />
+          ))
+        ) : (
+          <span>Your task list is empty</span>
+        )}
+      </ul>
+
       <div className={styles.buttons}>
         <Button
           onClick={changeTasksFilterHandler("all")}
@@ -108,6 +109,7 @@ export const TodoList = memo((props: TodoListPropsType) => {
         >
           All
         </Button>
+
         <Button
           onClick={changeTasksFilterHandler("active")}
           variant={filter === "active" ? "contained" : "outlined"}
@@ -115,6 +117,7 @@ export const TodoList = memo((props: TodoListPropsType) => {
         >
           Active
         </Button>
+
         <Button
           onClick={changeTasksFilterHandler("completed")}
           variant={filter === "completed" ? "contained" : "outlined"}

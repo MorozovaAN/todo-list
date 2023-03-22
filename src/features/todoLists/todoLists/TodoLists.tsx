@@ -1,21 +1,22 @@
 import { Paper } from "@mui/material";
-import { AddItemForm } from "../../../common/components/AddItemForm/AddItemForm";
-import { TodoList } from "./TodoList/TodoList";
+import { AddItemForm } from "../../../common/components/addItemForm/AddItemForm";
+import { TodoList } from "./todoList/TodoList";
 import React, { useCallback, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useTypedSelector } from "../../../common/hooks/useTypedSelector";
 import { useTypedDispatch } from "../../../common/hooks/useTypedDispatch";
 
 import {
-  updateTodoListTitleTC,
   createTodoListTC,
   deleteTodoListTC,
   getTodoLists,
+  updateTodoListTitleTC,
 } from "../todoListsSlice/todoListsThunk";
 import "./TodoLists.css";
+import { authSelectors } from "../../auth";
 
 export const TodoLists = () => {
-  const isLoggedIn = useTypedSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
   const todoLists = useTypedSelector((state) => state.todoLists);
   const tasks = useTypedSelector((state) => state.tasks);
   const dispatch = useTypedDispatch();
@@ -33,7 +34,7 @@ export const TodoLists = () => {
 
   const deleteTodoList = useCallback(
     (todoListId: string) => {
-      dispatch(deleteTodoListTC(todoListId));
+      deleteTodoListTC(todoListId);
     },
     [dispatch]
   );

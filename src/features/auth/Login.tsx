@@ -12,6 +12,7 @@ import { Navigate } from "react-router-dom";
 import { useTypedSelector } from "../../common/hooks/useTypedSelector";
 import { useTypedDispatch } from "../../common/hooks/useTypedDispatch";
 import { login } from "./authSlice/authThunk";
+import { authSelectors } from "./index";
 
 type FormikErrorType = {
   email?: string;
@@ -21,7 +22,7 @@ type FormikErrorType = {
 
 export const Login = () => {
   const dispatch = useTypedDispatch();
-  const isLoggedIn = useTypedSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
 
   const formik = useFormik({
     initialValues: {
