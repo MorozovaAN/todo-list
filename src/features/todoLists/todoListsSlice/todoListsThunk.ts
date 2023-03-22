@@ -8,7 +8,7 @@ import {
   setTodoLists,
   updateTodoListEntityStatus,
   updateTodoListTitle,
-} from "./todoListsSlicer";
+} from "./todoListsSlice";
 import {
   handelServerAppError,
   handelServerNetworkError,

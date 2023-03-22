@@ -4,47 +4,30 @@ import { TodoList } from "./todoList/TodoList";
 import React, { useCallback, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useTypedSelector } from "../../../common/hooks/useTypedSelector";
-import { useTypedDispatch } from "../../../common/hooks/useTypedDispatch";
 
 import {
   createTodoListTC,
-  deleteTodoListTC,
   getTodoLists,
-  updateTodoListTitleTC,
 } from "../todoListsSlice/todoListsThunk";
 import "./TodoLists.css";
 import { authSelectors } from "../../auth";
+import { tasksSelectors } from "./todoList/task";
+import { todoListsActions, todoListsSelectors } from "../index";
+import { useAction } from "../../../common/hooks/useActions";
 
 export const TodoLists = () => {
   const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
-  const todoLists = useTypedSelector((state) => state.todoLists);
-  const tasks = useTypedSelector((state) => state.tasks);
-  const dispatch = useTypedDispatch();
+  const todoLists = useTypedSelector(todoListsSelectors.todoListsSelector);
+  const tasks = useTypedSelector(tasksSelectors.tasksSelector);
+  const { getTodoLists, createTodoListTC } = useAction(todoListsActions);
 
   useEffect(() => {
-    isLoggedIn && dispatch(getTodoLists());
+    isLoggedIn && getTodoLists();
   }, []);
 
-  const createTodoList = useCallback(
-    (title: string) => {
-      dispatch(createTodoListTC(title));
-    },
-    [dispatch]
-  );
-
-  const deleteTodoList = useCallback(
-    (todoListId: string) => {
-      deleteTodoListTC(todoListId);
-    },
-    [dispatch]
-  );
-
-  const changeTodoListTitle = useCallback(
-    (todoListId: string, newTitle: string) => {
-      dispatch(updateTodoListTitleTC({ todoListId, title: newTitle }));
-    },
-    [dispatch]
-  );
+  const createTodoList = useCallback((title: string) => {
+    createTodoListTC(title);
+  }, []);
 
   if (!isLoggedIn) {
     return <Navigate to="/login" />;
@@ -66,8 +49,6 @@ export const TodoLists = () => {
                 tasks={tasks[l.id]}
                 filter={l.filter}
                 entityStatus={l.entityStatus}
-                changeTodoListTitle={changeTodoListTitle}
-                deleteTodoList={deleteTodoList}
               />
             </Paper>
           </div>

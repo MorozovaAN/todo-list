@@ -8,7 +8,7 @@ import {
   createTodoList,
   deleteTodoList,
   setTodoLists,
-} from "../../../../todoListsSlice/todoListsSlicer";
+} from "../../../../todoListsSlice/todoListsSlice";
 import { fetchTasks } from "./tasksThunk";
 
 type TasksType = {

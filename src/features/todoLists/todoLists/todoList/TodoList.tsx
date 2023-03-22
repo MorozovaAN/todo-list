@@ -11,7 +11,14 @@ import { RequestStatusType } from "../../../../app/appSlice/appSlice";
 import {
   FilterValuesType,
   updateFilter,
-} from "../../todoListsSlice/todoListsSlicer";
+} from "../../todoListsSlice/todoListsSlice";
+import {
+  deleteTodoListTC,
+  updateTodoListTitleTC,
+} from "../../todoListsSlice/todoListsThunk";
+import { useAction } from "../../../../common/hooks/useActions";
+import { todoListsActions } from "../../index";
+import { tasksActions } from "./task";
 import { useTypedDispatch } from "../../../../common/hooks/useTypedDispatch";
 
 type TodoListPropsType = {
@@ -20,112 +27,105 @@ type TodoListPropsType = {
   tasks: TaskType[];
   filter: FilterValuesType;
   entityStatus: RequestStatusType;
-  changeTodoListTitle: (todoListId: string, newTitle: string) => void;
-  deleteTodoList: (todoListId: string) => void;
 };
 
-export const TodoList = memo((props: TodoListPropsType) => {
-  const {
-    todoListId,
-    title,
-    tasks,
-    filter,
-    entityStatus,
-    changeTodoListTitle,
-    deleteTodoList,
-  } = props;
-  const dispatch = useTypedDispatch();
+export const TodoList = memo<TodoListPropsType>(
+  ({ todoListId, title, tasks, filter, entityStatus }) => {
+    const { deleteTodoListTC, updateTodoListTitleTC } =
+      useAction(todoListsActions);
+    const { fetchTasks, createTasksTC } = useAction(tasksActions);
+    const dispatch = useTypedDispatch();
+    let tasksForRender;
 
-  useEffect(() => {
-    dispatch(fetchTasks(todoListId));
-  }, []);
+    switch (filter) {
+      case "completed":
+        tasksForRender = tasks.filter((t) => t.status === TaskStatuses.New);
+        break;
+      case "active":
+        tasksForRender = tasks.filter(
+          (t) => t.status === TaskStatuses.Completed
+        );
+        break;
+      default:
+        tasksForRender = tasks;
+    }
 
-  let tasksForRender;
-  switch (filter) {
-    case "completed":
-      tasksForRender = tasks.filter((t) => t.status === TaskStatuses.New);
-      break;
-    case "active":
-      tasksForRender = tasks.filter((t) => t.status === TaskStatuses.Completed);
-      break;
-    default:
-      tasksForRender = tasks;
-  }
+    useEffect(() => {
+      fetchTasks(todoListId);
+    }, []);
 
-  const changeTasksFilterHandler = (filter: FilterValuesType) => {
-    return () => dispatch(updateFilter({ todoListId, filter }));
-  };
+    const changeTasksFilterHandler = (filter: FilterValuesType) => {
+      return () => dispatch(updateFilter({ todoListId, filter }));
+    };
 
-  const deleteTodoListHandler = useCallback(() => {
-    deleteTodoList(todoListId);
-  }, [deleteTodoList, todoListId]);
+    const deleteTodoList = useCallback(() => {
+      deleteTodoListTC(todoListId);
+    }, [todoListId]);
 
-  const createTask = (title: string) => {
-    dispatch(createTasksTC({ todoListId, title }));
-  };
+    const changeTodoListTitle = useCallback(
+      (newTitle: string) => {
+        updateTodoListTitleTC({ todoListId, title: newTitle });
+      },
+      [todoListId]
+    );
 
-  const changeTodoListTitleHandler = useCallback(
-    (newTitle: string) => {
-      changeTodoListTitle(todoListId, newTitle);
-    },
-    [changeTodoListTitle, todoListId]
-  );
+    return (
+      <div>
+        <div className={styles.titleContainer}>
+          <EditableSpan callBack={changeTodoListTitle} title={title} />
 
-  return (
-    <div>
-      <div className={styles.titleContainer}>
-        <EditableSpan callBack={changeTodoListTitleHandler} title={title} />
-        <IconButton
-          onClick={deleteTodoListHandler}
+          <IconButton
+            onClick={deleteTodoList}
+            disabled={entityStatus === "loading"}
+            className={styles.btnDeleteTodoList}
+            aria-label="delete"
+            size="small"
+          >
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </div>
+
+        <AddItemForm
+          callBack={(title: string) => createTasksTC({ todoListId, title })}
           disabled={entityStatus === "loading"}
-          className={styles.btnDeleteTodoList}
-          aria-label="delete"
-          size="small"
-        >
-          <DeleteIcon fontSize="small" />
-        </IconButton>
+        />
+
+        <ul className={styles.tasksLists}>
+          {tasks.length ? (
+            tasksForRender.map((t) => (
+              <Task key={t.id} todoListId={todoListId} task={t} />
+            ))
+          ) : (
+            <span>Your task list is empty</span>
+          )}
+        </ul>
+
+        <div className={styles.buttons}>
+          <Button
+            onClick={changeTasksFilterHandler("all")}
+            variant={filter === "all" ? "contained" : "outlined"}
+            size="small"
+          >
+            All
+          </Button>
+
+          <Button
+            onClick={changeTasksFilterHandler("active")}
+            variant={filter === "active" ? "contained" : "outlined"}
+            size="small"
+          >
+            Active
+          </Button>
+
+          <Button
+            onClick={changeTasksFilterHandler("completed")}
+            variant={filter === "completed" ? "contained" : "outlined"}
+            size="small"
+          >
+            Completed
+          </Button>
+        </div>
       </div>
-
-      <AddItemForm
-        callBack={createTask}
-        disabled={entityStatus === "loading"}
-      />
-
-      <ul className={styles.tasksLists}>
-        {tasks.length ? (
-          tasksForRender.map((t) => (
-            <Task key={t.id} todoListId={todoListId} task={t} />
-          ))
-        ) : (
-          <span>Your task list is empty</span>
-        )}
-      </ul>
-
-      <div className={styles.buttons}>
-        <Button
-          onClick={changeTasksFilterHandler("all")}
-          variant={filter === "all" ? "contained" : "outlined"}
-          size="small"
-        >
-          All
-        </Button>
-
-        <Button
-          onClick={changeTasksFilterHandler("active")}
-          variant={filter === "active" ? "contained" : "outlined"}
-          size="small"
-        >
-          Active
-        </Button>
-
-        <Button
-          onClick={changeTasksFilterHandler("completed")}
-          variant={filter === "completed" ? "contained" : "outlined"}
-          size="small"
-        >
-          Completed
-        </Button>
-      </div>
-    </div>
-  );
-});
+    );
+  }
+);

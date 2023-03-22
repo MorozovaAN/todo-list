@@ -7,20 +7,19 @@ import { Login } from "../features/auth/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { me } from "../features/auth/authSlice/authThunk";
 import { useTypedSelector } from "../common/hooks/useTypedSelector";
-import { useTypedDispatch } from "../common/hooks/useTypedDispatch";
-import { getTodoLists } from "../features/todoLists/todoListsSlice/todoListsThunk";
 import { appSelectors } from ".";
 import { LinearLoading } from "../common/components/linearLoading/LinearLoading";
 import { CircularLoading } from "../common/components/сircularLoading/CircularLoading";
+import { useAction } from "../common/hooks/useActions";
+import { authActions } from "../features/auth";
 
 export const App = () => {
   const status = useTypedSelector(appSelectors.statusSelector);
   const isInitialized = useTypedSelector(appSelectors.isInitializedSelector);
-  const dispatch = useTypedDispatch();
+  const { me } = useAction(authActions);
 
   useEffect(() => {
-    dispatch(me());
-    dispatch(getTodoLists());
+    me();
   }, []);
 
   return isInitialized ? (
