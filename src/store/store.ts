@@ -4,7 +4,7 @@ import thunkMiddleware from "redux-thunk";
 import { appReducer } from "../app";
 import { authReducer } from "../features/auth";
 import { todoListsReducer } from "../features/todoLists";
-import { tasksReducer } from "../features/todoLists/todoLists/todoList/task";
+import { tasksReducer } from "../features/todoLists/todoLists/todoList/tasks";
 
 export const store = configureStore({
   reducer: {

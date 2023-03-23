@@ -1,19 +1,18 @@
 import Paper from "@mui/material/Paper";
 import { AddItemForm } from "../../../common/components/addItemForm/AddItemForm";
-import { TodoList } from "./todoList/TodoList";
 import React, { useCallback, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useTypedSelector } from "../../../common/hooks/useTypedSelector";
-import { authSelectors } from "../../auth";
-import { tasksSelectors } from "./todoList/task";
-import { todoListsActions, todoListsSelector } from "../index";
+import { tasksSelector } from "./todoList/tasks";
+import { TodoList, todoListsActions, todoListsSelector } from "../index";
 import { useAction } from "../../../common/hooks/useActions";
 import "./TodoLists.css";
+import { isLoggedInSelector } from "../../auth";
 
 export const TodoLists = () => {
-  const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
+  const isLoggedIn = useTypedSelector(isLoggedInSelector);
   const todoLists = useTypedSelector(todoListsSelector);
-  const tasks = useTypedSelector(tasksSelectors.tasksSelector);
+  const tasks = useTypedSelector(tasksSelector);
   const { getTodoLists, createTodoListTC } = useAction(todoListsActions);
 
   useEffect(() => {

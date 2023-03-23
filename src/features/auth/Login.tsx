@@ -10,9 +10,9 @@ import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import { Navigate } from "react-router-dom";
 import { useTypedSelector } from "../../common/hooks/useTypedSelector";
-import { useTypedDispatch } from "../../common/hooks/useTypedDispatch";
 import { login } from "./authSlice/authThunk";
-import { authSelectors } from "./index";
+import { authActions, isLoggedInSelector } from "./index";
+import { useAction } from "../../common/hooks/useActions";
 
 type FormikErrorType = {
   email?: string;
@@ -21,8 +21,8 @@ type FormikErrorType = {
 };
 
 export const Login = () => {
-  const dispatch = useTypedDispatch();
-  const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
+  const { login } = useAction(authActions);
+  const isLoggedIn = useTypedSelector(isLoggedInSelector);
 
   const formik = useFormik({
     initialValues: {
@@ -49,8 +49,8 @@ export const Login = () => {
 
       return errors;
     },
-    onSubmit: async (values) => {
-      dispatch(login(values));
+    onSubmit: (values) => {
+      login(values);
     },
   });
 
@@ -65,10 +65,7 @@ export const Login = () => {
           <FormLabel>
             <p>
               To log in get registered
-              <a
-                href={"https://social-network.samuraijs.com/"}
-                target={"_blank"}
-              >
+              <a href="https://social-network.samuraijs.com/" target="_blank">
                 here
               </a>
             </p>

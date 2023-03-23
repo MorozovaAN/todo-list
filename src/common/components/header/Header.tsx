@@ -8,10 +8,10 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useAction } from "../../hooks/useActions";
-import { authActions, authSelectors } from "../../../features/auth";
+import { authActions, isLoggedInSelector } from "../../../features/auth";
 
 export const Header = () => {
-  const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
+  const isLoggedIn = useTypedSelector(isLoggedInSelector);
   const { logout } = useAction(authActions);
 
   return (

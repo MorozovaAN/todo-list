@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { Header } from "../common/components/header/Header";
-import { TodoLists } from "../features/todoLists/todoLists/TodoLists";
+
 import { ErrorSnackbar } from "../common/components/errorSnackbar/ErrorSnackbar";
-import { Login } from "../features/auth/Login";
+
 import { Navigate, Route, Routes } from "react-router-dom";
 import { me } from "../features/auth/authSlice/authThunk";
 import { useTypedSelector } from "../common/hooks/useTypedSelector";
@@ -11,7 +11,8 @@ import { isInitializedSelector, statusSelector } from ".";
 import { LinearLoading } from "../common/components/linearLoading/LinearLoading";
 import { CircularLoading } from "../common/components/сircularLoading/CircularLoading";
 import { useAction } from "../common/hooks/useActions";
-import { authActions } from "../features/auth";
+import { authActions, Login } from "../features/auth";
+import { TodoLists } from "../features/todoLists";
 
 export const App = () => {
   const status = useTypedSelector(statusSelector);
