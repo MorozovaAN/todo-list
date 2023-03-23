@@ -18,6 +18,7 @@ import { tasksActions } from "./task";
 import { tasksFilter } from "../../../../common/utils/tasksFilter";
 import "./TodoList.css";
 import { TasksFilterButton } from "../../../../common/components/tasksFilterButton/TasksFilterButton";
+import { infoSubtitleGenerator } from "../../../../common/utils/infoSubtitleGenerator";
 
 type TodoListPropsType = {
   todoListId: string;
@@ -38,10 +39,6 @@ export const TodoList = memo<TodoListPropsType>(
       fetchTasks(todoListId);
     }, []);
 
-    const deleteTodoList = useCallback(() => {
-      deleteTodoListTC(todoListId);
-    }, [todoListId]);
-
     const changeTodoListTitle = useCallback(
       (newTitle: string) => {
         updateTodoListTitleTC({ todoListId, title: newTitle });
@@ -55,7 +52,7 @@ export const TodoList = memo<TodoListPropsType>(
           <EditableSpan callBack={changeTodoListTitle} title={title} />
 
           <IconButton
-            onClick={deleteTodoList}
+            onClick={() => deleteTodoListTC(todoListId)}
             disabled={entityStatus === "loading"}
             className="todoList__btn--delete"
             aria-label="delete"
@@ -77,10 +74,8 @@ export const TodoList = memo<TodoListPropsType>(
               <Task key={t.id} todoListId={todoListId} task={t} />
             ))
           ) : (
-            <p className="todoList__empty-list-title">
-              {filter === "all" && "Todo list is empty"}
-              {filter === "active" && "No active tasks"}
-              {filter === "completed" && "No completed tasks"}
+            <p className="todoList__info-subtitle">
+              {infoSubtitleGenerator(filter)}
             </p>
           )}
         </ul>
