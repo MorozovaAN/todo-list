@@ -19,12 +19,12 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
   const { updateTasksTC, deleteTasksTC } = useAction(TasksActions);
 
   const changeTaskStatusHandler = (checked: boolean) => {
-    const newStatus = checked ? TaskStatuses.Completed : TaskStatuses.New;
-
     updateTasksTC({
       todoListId,
       taskId: id,
-      domainModel: { status: newStatus },
+      domainModel: {
+        status: checked ? TaskStatuses.Completed : TaskStatuses.New,
+      },
     });
   };
 
