@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, ChangeEvent } from "react";
 import "./EditableSpan.css";
+import { TextField } from "@mui/material";
 
 type EditableSpanPropsType = {
   callBack: (newTitle: string) => void;
@@ -12,21 +13,37 @@ export const EditableSpan: FC<EditableSpanPropsType> = ({
 }) => {
   const [newTitle, setNewTitle] = useState(title);
   const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState("");
+
+  const inputOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const title = e.currentTarget.value;
+    setNewTitle(title);
+    setError(title.length > 80 ? "You can write 80 symbols or less" : "");
+  };
 
   const changeTitleHandler = () => {
-    newTitle !== title && callBack(newTitle.trim());
+    if (newTitle !== title && !error) {
+      callBack(newTitle.trim());
+    }
+    if (newTitle.length > 80) {
+      setNewTitle(title);
+    }
+    setError("");
     setEditMode(false);
   };
 
   return editMode ? (
-    <input
-      type="text"
-      className="editable-span__input"
-      value={newTitle}
-      onChange={(e) => setNewTitle(e.currentTarget.value)}
+    <TextField
+      onChange={inputOnChangeHandler}
       onKeyUp={(e) => e.key === "Enter" && changeTitleHandler()}
       onBlur={changeTitleHandler}
+      label={error}
+      value={newTitle}
+      error={Boolean(error)}
       autoFocus
+      id="standard-basic"
+      variant="standard"
+      classes={{ root: "editable-span__input" }}
     />
   ) : (
     <span

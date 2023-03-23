@@ -35,7 +35,7 @@ export const AddItemForm = memo(
       <div className="add-item-form">
         <TextField
           onChange={inputOnChangeHandler}
-          onKeyDown={(e) => e.key === "Enter" && addItemHandler()}
+          onKeyUp={(e) => e.key === "Enter" && addItemHandler()}
           onBlur={() => setError("")}
           label={error}
           classes={{ root: "add-item-form__input" }}
