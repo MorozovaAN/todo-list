@@ -4,14 +4,10 @@ import { EditableSpan } from "../../../../common/components/editableSpan/Editabe
 import { Task } from "./task/Task";
 import { createTasksTC, fetchTasks } from "./task/tasksSlice/tasksThunk";
 import { TaskType } from "../../../../api/todolist-api";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import { RequestStatusType } from "../../../../app/appSlice/appSlice";
-import {
-  FilterValuesType,
-  updateFilter,
-} from "../../todoListsSlice/todoListsSlice";
+import { FilterValuesType } from "../../todoListsSlice/todoListsSlice";
 import {
   deleteTodoListTC,
   updateTodoListTitleTC,
@@ -19,9 +15,9 @@ import {
 import { useAction } from "../../../../common/hooks/useActions";
 import { todoListsActions } from "../../index";
 import { tasksActions } from "./task";
-import { useTypedDispatch } from "../../../../common/hooks/useTypedDispatch";
 import { tasksFilter } from "../../../../common/utils/tasksFilter";
 import "./TodoList.css";
+import { TasksFilterButton } from "../../../../common/components/tasksFilterButton/TasksFilterButton";
 
 type TodoListPropsType = {
   todoListId: string;
@@ -37,15 +33,10 @@ export const TodoList = memo<TodoListPropsType>(
       useAction(todoListsActions);
     const { fetchTasks, createTasksTC } = useAction(tasksActions);
     const tasksForRender = tasksFilter(tasks, filter);
-    const dispatch = useTypedDispatch();
 
     useEffect(() => {
       fetchTasks(todoListId);
     }, []);
-
-    const changeTasksFilterHandler = (filter: FilterValuesType) => {
-      return () => dispatch(updateFilter({ todoListId, filter }));
-    };
 
     const deleteTodoList = useCallback(() => {
       deleteTodoListTC(todoListId);
@@ -95,35 +86,21 @@ export const TodoList = memo<TodoListPropsType>(
         </ul>
 
         <div className="todoList__buttons-wrapper">
-          <Button
-            onClick={changeTasksFilterHandler("all")}
-            variant={filter === "all" ? "contained" : "outlined"}
-            classes={{ root: "todoList__buttons-btn" }}
-            color="secondary"
-            size="small"
-          >
-            All
-          </Button>
-
-          <Button
-            onClick={changeTasksFilterHandler("active")}
-            variant={filter === "active" ? "contained" : "outlined"}
-            classes={{ root: "todoList__buttons-btn" }}
-            color="secondary"
-            size="small"
-          >
-            Active
-          </Button>
-
-          <Button
-            onClick={changeTasksFilterHandler("completed")}
-            variant={filter === "completed" ? "contained" : "outlined"}
-            classes={{ root: "todoList__buttons-btn" }}
-            color="secondary"
-            size="small"
-          >
-            Completed
-          </Button>
+          <TasksFilterButton
+            label="all"
+            filter={filter}
+            todoListId={todoListId}
+          />
+          <TasksFilterButton
+            label="active"
+            filter={filter}
+            todoListId={todoListId}
+          />
+          <TasksFilterButton
+            label="completed"
+            filter={filter}
+            todoListId={todoListId}
+          />
         </div>
       </div>
     );
