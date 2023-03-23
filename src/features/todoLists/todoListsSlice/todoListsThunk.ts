@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ResultStatus, todolistAPI } from "../../../api/todolist-api";
-import { setStatus } from "../../../app/appSlice/appSlice";
 import { AppDispatchType } from "../../../common/hooks/useTypedDispatch";
 import {
   createTodoList,
@@ -13,6 +12,7 @@ import {
   handelServerAppError,
   handelServerNetworkError,
 } from "../../../common/utils/errorUtils";
+import { setStatus } from "../../../app";
 
 export const getTodoLists = createAsyncThunk<
   void,

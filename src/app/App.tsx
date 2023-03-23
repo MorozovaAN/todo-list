@@ -7,15 +7,15 @@ import { Login } from "../features/auth/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { me } from "../features/auth/authSlice/authThunk";
 import { useTypedSelector } from "../common/hooks/useTypedSelector";
-import { appSelectors } from ".";
+import { isInitializedSelector, statusSelector } from ".";
 import { LinearLoading } from "../common/components/linearLoading/LinearLoading";
 import { CircularLoading } from "../common/components/сircularLoading/CircularLoading";
 import { useAction } from "../common/hooks/useActions";
 import { authActions } from "../features/auth";
 
 export const App = () => {
-  const status = useTypedSelector(appSelectors.statusSelector);
-  const isInitialized = useTypedSelector(appSelectors.isInitializedSelector);
+  const status = useTypedSelector(statusSelector);
+  const isInitialized = useTypedSelector(isInitializedSelector);
   const { me } = useAction(authActions);
 
   useEffect(() => {

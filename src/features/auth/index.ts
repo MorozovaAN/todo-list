@@ -1,4 +1,11 @@
 import * as authSelectors from "./authSlice/authSelectors";
-import * as authActions from "./authSlice/authThunk";
+import * as authAsyncActions from "./authSlice/authThunk";
+import { authSlice } from "./authSlice/authSlice";
 
-export { authSelectors, authActions };
+const authReducer = authSlice.reducer;
+const authActions = {
+  ...authAsyncActions,
+  ...authSlice.actions,
+};
+
+export { authSelectors, authActions, authReducer };

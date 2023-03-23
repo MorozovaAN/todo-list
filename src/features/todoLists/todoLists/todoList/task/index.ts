@@ -1,4 +1,11 @@
 import * as tasksSelectors from "./tasksSlice/tasksSelectors";
-import * as tasksActions from "./tasksSlice/tasksThunk";
+import * as tasksAsyncActions from "./tasksSlice/tasksThunk";
+import { tasksSlice } from "./tasksSlice/tasksSlice";
 
-export { tasksActions, tasksSelectors };
+const tasksReducer = tasksSlice.reducer;
+const TasksActions = {
+  ...tasksAsyncActions,
+  ...tasksSlice.actions,
+};
+
+export { TasksActions, tasksSelectors, tasksReducer };

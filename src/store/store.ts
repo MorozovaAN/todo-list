@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { appReducer } from "../app/appSlice/appSlice";
-import { authReducer } from "../features/auth/authSlice/authSlice";
-import { todoListsReducer } from "../features/todoLists/todoListsSlice/todoListsSlice";
-import { tasksReducer } from "../features/todoLists/todoLists/todoList/task/tasksSlice/tasksSlice";
+
 import thunkMiddleware from "redux-thunk";
+import { appReducer } from "../app";
+import { authReducer } from "../features/auth";
+import { todoListsReducer } from "../features/todoLists";
+import { tasksReducer } from "../features/todoLists/todoLists/todoList/task";
 
 export const store = configureStore({
   reducer: {

@@ -1,6 +1,6 @@
 import { FilterValuesType } from "../../features/todoLists/todoListsSlice/todoListsSlice";
 
-export const infoSubtitleGenerator = (filter: FilterValuesType): string => {
+export const getInfoSubtitler = (filter: FilterValuesType): string => {
   switch (filter) {
     case "active":
       return "No active tasks";

@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setInitialized, setStatus } from "../../../app/appSlice/appSlice";
 import {
   authAPI,
   LoginDataType,
@@ -11,6 +10,7 @@ import {
 } from "../../../common/utils/errorUtils";
 import { setIsLoggedIn } from "./authSlice";
 import { AppDispatchType } from "../../../common/hooks/useTypedDispatch";
+import { setInitialized, setStatus } from "../../../app";
 
 export const me = createAsyncThunk<
   void,

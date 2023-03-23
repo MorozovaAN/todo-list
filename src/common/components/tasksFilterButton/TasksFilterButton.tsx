@@ -1,11 +1,9 @@
 import React, { FC } from "react";
 import Button from "@mui/material/Button";
-import {
-  FilterValuesType,
-  updateFilter,
-} from "../../../features/todoLists/todoListsSlice/todoListsSlice";
-import { useTypedDispatch } from "../../hooks/useTypedDispatch";
+import { FilterValuesType } from "../../../features/todoLists/todoListsSlice/todoListsSlice";
 import "./TasksFilterButton.css";
+import { useAction } from "../../hooks/useActions";
+import { todoListsActions } from "../../../features/todoLists";
 
 type TasksFilterButtonPropsType = {
   todoListId: string;
@@ -18,11 +16,11 @@ export const TasksFilterButton: FC<TasksFilterButtonPropsType> = ({
   label,
   todoListId,
 }) => {
-  const dispatch = useTypedDispatch();
+  const { updateFilter } = useAction(todoListsActions);
 
   return (
     <Button
-      onClick={() => dispatch(updateFilter({ todoListId, filter: label }))}
+      onClick={() => updateFilter({ todoListId, filter: label })}
       variant={label === filter ? "contained" : "outlined"}
       classes={{ root: "todoList__buttons-btn" }}
       size="small"

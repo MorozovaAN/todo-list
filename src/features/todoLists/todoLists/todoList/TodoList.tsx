@@ -14,11 +14,11 @@ import {
 } from "../../todoListsSlice/todoListsThunk";
 import { useAction } from "../../../../common/hooks/useActions";
 import { todoListsActions } from "../../index";
-import { tasksActions } from "./task";
+import { TasksActions } from "./task";
 import { tasksFilter } from "../../../../common/utils/tasksFilter";
 import "./TodoList.css";
 import { TasksFilterButton } from "../../../../common/components/tasksFilterButton/TasksFilterButton";
-import { infoSubtitleGenerator } from "../../../../common/utils/infoSubtitleGenerator";
+import { getInfoSubtitler } from "../../../../common/utils/getInfoSubtitler";
 
 type TodoListPropsType = {
   todoListId: string;
@@ -32,19 +32,16 @@ export const TodoList = memo<TodoListPropsType>(
   ({ todoListId, title, tasks, filter, entityStatus }) => {
     const { deleteTodoListTC, updateTodoListTitleTC } =
       useAction(todoListsActions);
-    const { fetchTasks, createTasksTC } = useAction(tasksActions);
+    const { fetchTasks, createTasksTC } = useAction(TasksActions);
     const tasksForRender = tasksFilter(tasks, filter);
 
     useEffect(() => {
       fetchTasks(todoListId);
     }, []);
 
-    const changeTodoListTitle = useCallback(
-      (newTitle: string) => {
-        updateTodoListTitleTC({ todoListId, title: newTitle });
-      },
-      [todoListId]
-    );
+    const changeTodoListTitle = useCallback((newTitle: string) => {
+      updateTodoListTitleTC({ todoListId, title: newTitle });
+    }, []);
 
     return (
       <div>
@@ -75,7 +72,7 @@ export const TodoList = memo<TodoListPropsType>(
             ))
           ) : (
             <p className="todoList__info-subtitle">
-              {infoSubtitleGenerator(filter)}
+              {getInfoSubtitler(filter)}
             </p>
           )}
         </ul>

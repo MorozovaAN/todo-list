@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatchType } from "../../../../../../common/hooks/useTypedDispatch";
-import { setStatus } from "../../../../../../app/appSlice/appSlice";
 import {
   ResultStatus,
   tasksAPI,
@@ -19,6 +18,7 @@ import {
 } from "./tasksSlice";
 import axios, { AxiosError } from "axios";
 import { AppRootStateType } from "../../../../../../store/store";
+import { setStatus } from "../../../../../../app";
 
 export const fetchTasks = createAsyncThunk<
   { todolistId: string; tasks: TaskType[] },

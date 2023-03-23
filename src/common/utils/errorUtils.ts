@@ -1,4 +1,4 @@
-import { setError, setStatus } from "../../app/appSlice/appSlice";
+import { setError, setStatus } from "../../app";
 import { AppDispatchType } from "../hooks/useTypedDispatch";
 
 export const handelServerNetworkError = (

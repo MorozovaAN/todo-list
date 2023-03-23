@@ -6,13 +6,13 @@ import { Navigate } from "react-router-dom";
 import { useTypedSelector } from "../../../common/hooks/useTypedSelector";
 import { authSelectors } from "../../auth";
 import { tasksSelectors } from "./todoList/task";
-import { todoListsActions, todoListsSelectors } from "../index";
+import { todoListsActions, todoListsSelector } from "../index";
 import { useAction } from "../../../common/hooks/useActions";
 import "./TodoLists.css";
 
 export const TodoLists = () => {
   const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
-  const todoLists = useTypedSelector(todoListsSelectors.todoListsSelector);
+  const todoLists = useTypedSelector(todoListsSelector);
   const tasks = useTypedSelector(tasksSelectors.tasksSelector);
   const { getTodoLists, createTodoListTC } = useAction(todoListsActions);
 

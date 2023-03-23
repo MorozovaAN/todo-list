@@ -4,19 +4,15 @@ import {
   TaskStatuses,
   TaskType,
 } from "../../../../../../api/todolist-api";
-import {
-  createTodoList,
-  deleteTodoList,
-  setTodoLists,
-} from "../../../../todoListsSlice/todoListsSlice";
 import { fetchTasks } from "./tasksThunk";
+import { todoListsActions } from "../../../../index";
 
 type TasksType = {
   [key: string]: TaskType[];
 };
 const initialState: TasksType = {};
 
-const tasksSlice = createSlice({
+export const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
@@ -51,15 +47,15 @@ const tasksSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(setTodoLists, (state, action) => {
+    builder.addCase(todoListsActions.setTodoLists, (state, action) => {
       action.payload.forEach((tl) => (state[tl.id] = []));
     });
 
-    builder.addCase(createTodoList, (state, action) => {
+    builder.addCase(todoListsActions.createTodoList, (state, action) => {
       state[action.payload.id] = [];
     });
 
-    builder.addCase(deleteTodoList, (state, action) => {
+    builder.addCase(todoListsActions.deleteTodoList, (state, action) => {
       delete state[action.payload.todoListId];
     });
     builder.addCase(fetchTasks.fulfilled, (state, action) => {
@@ -69,7 +65,6 @@ const tasksSlice = createSlice({
 });
 
 export const { createTask, deleteTask, updateTask } = tasksSlice.actions;
-export const tasksReducer = tasksSlice.reducer;
 
 export type UpdateTaskDomainModelType = {
   title?: string;

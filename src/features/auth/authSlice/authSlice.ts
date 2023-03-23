@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { login } from "./authThunk";
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState: { isLoggedIn: false },
   reducers: {
@@ -18,4 +18,3 @@ const authSlice = createSlice({
 });
 
 export const { setIsLoggedIn } = authSlice.actions;
-export const authReducer = authSlice.reducer;

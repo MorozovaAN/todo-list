@@ -1,4 +1,12 @@
 import * as todoListsSelectors from "./todoListsSlice/todoListsSelectors";
-import * as todoListsActions from "./todoListsSlice/todoListsThunk";
+import * as todoListsAsyncActions from "./todoListsSlice/todoListsThunk";
+import { todoListsSlice } from "./todoListsSlice/todoListsSlice";
 
-export { todoListsSelectors, todoListsActions };
+const { todoListsSelector } = todoListsSelectors;
+const todoListsReducer = todoListsSlice.reducer;
+const todoListsActions = {
+  ...todoListsSlice.actions,
+  ...todoListsAsyncActions,
+};
+
+export { todoListsSelector, todoListsActions, todoListsReducer };
