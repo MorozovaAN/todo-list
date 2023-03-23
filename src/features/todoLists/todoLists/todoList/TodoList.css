@@ -3,6 +3,7 @@
   width: 100%;
   justify-content: space-between;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 .todoList__title-wrapper span,
@@ -13,6 +14,7 @@
 
 .todoList__btn--delete {
   margin-left: 10px;
+  height: fit-content;
 }
 
 .todoList__tasks {
@@ -29,4 +31,9 @@
 .todoList__buttons-wrapper {
   display: flex;
   gap: 10px;
+  justify-content: center;
+}
+
+.todoList__buttons-btn {
+  width: 104px;
 }

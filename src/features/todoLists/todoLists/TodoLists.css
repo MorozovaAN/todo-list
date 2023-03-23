@@ -5,7 +5,8 @@
 
 .todoLists__add-item {
   padding: 10px;
-  width: 276px;
+  width: 320px;
+  height: 120px;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -15,5 +16,5 @@
 }
 
 .todoLists__todoList-wrapper {
-  width: 280px;
+  width: 320px;
 }

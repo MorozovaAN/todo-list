@@ -4,8 +4,9 @@ import { EditableSpan } from "../../../../common/components/editableSpan/Editabe
 import { Task } from "./task/Task";
 import { createTasksTC, fetchTasks } from "./task/tasksSlice/tasksThunk";
 import { TaskType } from "../../../../api/todolist-api";
-import { Button, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
 import { RequestStatusType } from "../../../../app/appSlice/appSlice";
 import {
   FilterValuesType,
@@ -69,23 +70,26 @@ export const TodoList = memo<TodoListPropsType>(
             aria-label="delete"
             size="small"
           >
-            <DeleteIcon fontSize="small" />
+            <Delete fontSize="medium" />
           </IconButton>
         </div>
 
         <AddItemForm
           callback={(title: string) => createTasksTC({ todoListId, title })}
           disabled={entityStatus === "loading"}
+          placeholder="write your task"
         />
 
         <ul className="todoList__tasks">
-          {tasks.length ? (
+          {tasksForRender.length ? (
             tasksForRender.map((t) => (
               <Task key={t.id} todoListId={todoListId} task={t} />
             ))
           ) : (
             <p className="todoList__empty-list-title">
-              Your task list is empty
+              {filter === "all" && "Todo list is empty"}
+              {filter === "active" && "No active tasks"}
+              {filter === "completed" && "No completed tasks"}
             </p>
           )}
         </ul>
@@ -94,6 +98,8 @@ export const TodoList = memo<TodoListPropsType>(
           <Button
             onClick={changeTasksFilterHandler("all")}
             variant={filter === "all" ? "contained" : "outlined"}
+            classes={{ root: "todoList__buttons-btn" }}
+            color="secondary"
             size="small"
           >
             All
@@ -102,6 +108,8 @@ export const TodoList = memo<TodoListPropsType>(
           <Button
             onClick={changeTasksFilterHandler("active")}
             variant={filter === "active" ? "contained" : "outlined"}
+            classes={{ root: "todoList__buttons-btn" }}
+            color="secondary"
             size="small"
           >
             Active
@@ -110,6 +118,8 @@ export const TodoList = memo<TodoListPropsType>(
           <Button
             onClick={changeTasksFilterHandler("completed")}
             variant={filter === "completed" ? "contained" : "outlined"}
+            classes={{ root: "todoList__buttons-btn" }}
+            color="secondary"
             size="small"
           >
             Completed

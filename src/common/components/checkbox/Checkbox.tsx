@@ -13,5 +13,8 @@ export const CustomCheckbox: FC<CustomCheckboxType> = ({
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     callBack(e.currentTarget.checked);
   };
-  return <Checkbox onChange={onChangeHandler} checked={checked} />;
+
+  return (
+    <Checkbox onChange={onChangeHandler} checked={checked} color="default" />
+  );
 };

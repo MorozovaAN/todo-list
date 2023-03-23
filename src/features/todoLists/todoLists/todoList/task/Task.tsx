@@ -1,11 +1,11 @@
 import { CustomCheckbox } from "../../../../../common/components/checkbox/Checkbox";
 import { EditableSpan } from "../../../../../common/components/editableSpan/EditabelSpan";
-import { IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import React, { memo } from "react";
 import { TaskStatuses, TaskType } from "../../../../../api/todolist-api";
 import { useAction } from "../../../../../common/hooks/useActions";
 import { tasksActions } from "./index";
+import ClearIcon from "@mui/icons-material/Clear";
 import "./Task.css";
 
 type TaskPropsType = {
@@ -55,7 +55,7 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
         aria-label="delete"
         size="small"
       >
-        <DeleteIcon fontSize="inherit" />
+        <ClearIcon fontSize="small" />
       </IconButton>
     </li>
   );

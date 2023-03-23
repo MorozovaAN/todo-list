@@ -1,19 +1,14 @@
-import { Paper } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import { AddItemForm } from "../../../common/components/addItemForm/AddItemForm";
 import { TodoList } from "./todoList/TodoList";
 import React, { useCallback, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useTypedSelector } from "../../../common/hooks/useTypedSelector";
-
-import {
-  createTodoListTC,
-  getTodoLists,
-} from "../todoListsSlice/todoListsThunk";
-import "./TodoLists.css";
 import { authSelectors } from "../../auth";
 import { tasksSelectors } from "./todoList/task";
 import { todoListsActions, todoListsSelectors } from "../index";
 import { useAction } from "../../../common/hooks/useActions";
+import "./TodoLists.css";
 
 export const TodoLists = () => {
   const isLoggedIn = useTypedSelector(authSelectors.isLoggedInSelector);
@@ -32,7 +27,10 @@ export const TodoLists = () => {
   return isLoggedIn ? (
     <div className="todoLists">
       <Paper classes={{ root: "todoLists__add-item" }}>
-        <AddItemForm callback={createTodoList} />
+        <AddItemForm
+          callback={createTodoList}
+          placeholder="write title for new todo list"
+        />
       </Paper>
 
       {todoLists.map((l) => {

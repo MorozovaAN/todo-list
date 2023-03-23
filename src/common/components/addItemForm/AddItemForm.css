@@ -5,15 +5,21 @@
 
 .add-item-form .add-item-form__button {
   align-self: flex-end;
-  max-width: 25px;
-  max-height: 25px;
-  min-width: 25px;
-  min-height: 25px;
-  margin-left: 10px;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  margin-left: 8px;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .add-item-form__input {
   width: 100%;
   padding: 6px;
   box-sizing: border-box;
+}
+
+.add-item-form__button-icon {
+  font-size: 24px;
+  margin-top: 2px;
 }

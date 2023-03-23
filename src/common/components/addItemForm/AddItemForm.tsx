@@ -5,16 +5,19 @@ import { Button, TextField } from "@mui/material";
 type AddItemFormPropsType = {
   callback: (title: string) => void;
   disabled?: boolean;
+  placeholder: string;
 };
 
 export const AddItemForm = memo(
-  ({ callback: callback, disabled }: AddItemFormPropsType) => {
+  ({ callback, disabled, placeholder }: AddItemFormPropsType) => {
     const [title, setTitle] = useState("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState("");
 
     const inputOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      error && setError(false);
-      setTitle(e.currentTarget.value);
+      const title = e.currentTarget.value;
+      error && setError("");
+      setTitle(title);
+      title.trim().length > 80 && setError("You can write 80 symbols or less");
     };
 
     const addItemHandler = () => {
@@ -24,7 +27,7 @@ export const AddItemForm = memo(
         callback(newTitle);
         setTitle("");
       } else {
-        setError(true);
+        setError("Title is required");
       }
     };
 
@@ -33,13 +36,13 @@ export const AddItemForm = memo(
         <TextField
           onChange={inputOnChangeHandler}
           onKeyDown={(e) => e.key === "Enter" && addItemHandler()}
-          onBlur={() => setError(false)}
-          label={error ? "Title is required" : ""}
+          onBlur={() => setError("")}
+          label={error}
           classes={{ root: "add-item-form__input" }}
           disabled={disabled}
           value={title}
-          error={error}
-          placeholder="write your task"
+          error={Boolean(error)}
+          placeholder={placeholder}
           id="standard-basic"
           variant="standard"
         />
@@ -53,7 +56,19 @@ export const AddItemForm = memo(
           color="success"
           variant="contained"
         >
-          +
+          <span className="add-item-form__button-icon">&#43;</span>
+        </Button>
+
+        <Button
+          onClick={() => setTitle("")}
+          disabled={disabled || !title.trim()}
+          classes={{
+            root: "add-item-form__button",
+          }}
+          color="error"
+          variant="contained"
+        >
+          <span className="add-item-form__button-icon">&times;</span>
         </Button>
       </div>
     );
