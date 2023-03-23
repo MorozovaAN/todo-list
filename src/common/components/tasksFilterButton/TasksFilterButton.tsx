@@ -5,6 +5,7 @@ import {
   updateFilter,
 } from "../../../features/todoLists/todoListsSlice/todoListsSlice";
 import { useTypedDispatch } from "../../hooks/useTypedDispatch";
+import "./TasksFilterButton.css";
 
 type TasksFilterButtonPropsType = {
   todoListId: string;
@@ -24,7 +25,6 @@ export const TasksFilterButton: FC<TasksFilterButtonPropsType> = ({
       onClick={() => dispatch(updateFilter({ todoListId, filter: label }))}
       variant={label === filter ? "contained" : "outlined"}
       classes={{ root: "todoList__buttons-btn" }}
-      color="secondary"
       size="small"
     >
       {label}
