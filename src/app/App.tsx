@@ -9,11 +9,12 @@ import { isInitializedSelector, statusSelector } from ".";
 import { LinearLoading } from "../common/components/linearLoading/LinearLoading";
 import { CircularLoading } from "../common/components/сircularLoading/CircularLoading";
 import { useAction } from "../common/hooks/useActions";
-import { authActions, Login } from "../features/auth";
+import { authActions, isLoggedInSelector, Login } from "../features/auth";
 import { TodoLists } from "../features/todoLists";
 
 export const App = () => {
   const status = useTypedSelector(statusSelector);
+  const isLoggedIn = useTypedSelector(isLoggedInSelector);
   const isInitialized = useTypedSelector(isInitializedSelector);
   const { me } = useAction(authActions);
 
@@ -22,13 +23,13 @@ export const App = () => {
   }, []);
 
   return isInitialized ? (
-    <div>
+    <>
       <ErrorSnackbar />
-      <Header />
+      {isLoggedIn && <Header />}
 
       {status === "loading" && <LinearLoading />}
 
-      <section className="content">
+      <section className={isLoggedIn ? "content" : "content--secondary"}>
         <Routes>
           <Route path="/" element={<Navigate to="/todo-lists-app" />} />
           <Route path="/todo-lists-app" element={<TodoLists />} />
@@ -38,7 +39,7 @@ export const App = () => {
           <Route path="/*" element={<Navigate to="/404" />} />
         </Routes>
       </section>
-    </div>
+    </>
   ) : (
     <CircularLoading />
   );

@@ -4,4 +4,11 @@
   box-sizing: border-box;
   overflow-x: auto;
   min-height: calc(100vh - 64px);
+  background-image: url("../assets/img/background-lists.jpeg");
+  background-size: cover;
+}
+
+.content--secondary {
+  background-image: url("../assets/img/background.jpeg");
+  background-size: cover;
 }

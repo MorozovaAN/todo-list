@@ -1,6 +1,6 @@
-.circularLoading {
+.circular-loading {
   position: fixed;
-  top: 30%;
+  top: 40%;
   text-align: center;
   width: 100%;
 }
