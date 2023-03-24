@@ -2,13 +2,12 @@ import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useAction } from "../../hooks/useActions";
 import { authActions, isLoggedInSelector } from "../../../features/auth";
+import LogoutIcon from "@mui/icons-material/Logout";
+import "./Header.css";
 
 export const Header = () => {
   const isLoggedIn = useTypedSelector(isLoggedInSelector);
@@ -17,24 +16,15 @@ export const Header = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-
+        <Toolbar classes={{ root: "header__toolbar" }}>
           {isLoggedIn && (
-            <Button color="inherit" onClick={() => logout()}>
-              Log out
+            <Button
+              variant="text"
+              color="inherit"
+              classes={{ root: "header__logout-btn" }}
+              onClick={() => logout()}
+            >
+              Log out <LogoutIcon />
             </Button>
           )}
         </Toolbar>

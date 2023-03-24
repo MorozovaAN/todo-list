@@ -1,0 +1,9 @@
+.header__toolbar {
+  justify-content: flex-end;
+}
+
+.header__logout-btn {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
