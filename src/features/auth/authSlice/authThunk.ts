@@ -17,18 +17,12 @@ export const me = createAsyncThunk<
   undefined,
   { dispatch: AppDispatchType }
 >("auth/me", async (_, { dispatch }) => {
-  dispatch(setStatus("loading"));
-
   try {
     const res = await authAPI.me();
     if (res.data.resultCode === ResultStatus.OK) {
       dispatch(setIsLoggedIn(true));
       dispatch(setStatus("succeeded"));
-    } else {
-      handelServerAppError(dispatch, res.data);
     }
-  } catch (error) {
-    handelServerNetworkError(dispatch, error);
   } finally {
     dispatch(setInitialized(true));
   }

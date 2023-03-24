@@ -4,7 +4,6 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
@@ -13,6 +12,7 @@ import { useTypedSelector } from "../../common/hooks/useTypedSelector";
 import { login } from "./authSlice/authThunk";
 import { authActions, isLoggedInSelector } from "./index";
 import { useAction } from "../../common/hooks/useActions";
+import "./Login.css";
 
 type FormikErrorType = {
   email?: string;
@@ -34,7 +34,7 @@ export const Login = () => {
       const errors: FormikErrorType = {};
 
       if (!values.email) {
-        errors.email = "Required";
+        errors.email = "Field is required";
       } else if (
         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
       ) {
@@ -42,9 +42,9 @@ export const Login = () => {
       }
 
       if (!values.password) {
-        errors.password = "Required";
-      } else if (values.password.length < 3) {
-        errors.password = "password should be more 3 symbols";
+        errors.password = "Field is required";
+      } else if (values.password.length < 6) {
+        errors.password = "Password must be 6 symbols or more";
       }
 
       return errors;
@@ -58,61 +58,73 @@ export const Login = () => {
     return <Navigate to="/todo-lists-app" />;
   }
 
+  const useDemoAccountHandler = () => {
+    login({
+      email: "MorozovaAnastasiyaN@yandex.ru",
+      password: "c539491b44",
+      rememberMe: true,
+    });
+  };
+
   return (
-    <Grid container justifyContent="center">
-      <Grid item justifyContent="center">
-        <FormControl>
-          <FormLabel>
-            <p>
-              To log in get registered
-              <a href="https://social-network.samuraijs.com/" target="_blank">
-                here
-              </a>
-            </p>
-            <p>or use common test account credentials:</p>
-            <p>Email: free@samuraijs.com</p>
-            <p>Password: free</p>
-          </FormLabel>
+    <Grid container justifyContent="center" rowGap="30px">
+      <FormControl>
+        <h2 className="login__form-title">Sign in Todo lists app</h2>
 
-          <form onSubmit={formik.handleSubmit}>
-            <FormGroup>
-              <TextField
-                label="Email"
-                margin="normal"
-                {...formik.getFieldProps("email")}
-              />
+        <form onSubmit={formik.handleSubmit} className="login__form">
+          <FormGroup classes={{ root: "login__form-container" }}>
+            <TextField
+              label={
+                formik.touched.email && formik.errors.email
+                  ? formik.errors.email
+                  : "Email"
+              }
+              margin="normal"
+              error={!!(formik.touched.email && formik.errors.email)}
+              {...formik.getFieldProps("email")}
+            />
 
-              {formik.touched.email && formik.errors.email && (
-                <div style={{ color: "red" }}>{formik.errors.email}</div>
-              )}
+            <TextField
+              type="password"
+              label={
+                formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : "Password"
+              }
+              error={!!(formik.touched.password && formik.errors.password)}
+              margin="normal"
+              {...formik.getFieldProps("password")}
+            />
 
-              <TextField
-                type="password"
-                label="Password"
-                margin="normal"
-                {...formik.getFieldProps("password")}
-              />
+            <FormControlLabel
+              label="Remember me"
+              control={
+                <Checkbox
+                  {...formik.getFieldProps("rememberMe")}
+                  checked={formik.values.rememberMe}
+                />
+              }
+            />
 
-              {formik.touched.password && formik.errors.password && (
-                <div style={{ color: "red" }}>{formik.errors.password}</div>
-              )}
-
-              <FormControlLabel
-                label="Remember me"
-                control={
-                  <Checkbox
-                    {...formik.getFieldProps("rememberMe")}
-                    checked={formik.values.rememberMe}
-                  />
-                }
-              />
+            <div className="login__form__buttons">
               <Button type="submit" variant="contained" color="primary">
                 Login
               </Button>
-            </FormGroup>
-          </form>
-        </FormControl>
-      </Grid>
+              <Button variant="outlined" onClick={useDemoAccountHandler}>
+                Use demo account
+              </Button>
+            </div>
+
+            <a
+              className="login__sign-up"
+              href="https://social-network.samuraijs.com/"
+              target="_blank"
+            >
+              Sign up
+            </a>
+          </FormGroup>
+        </form>
+      </FormControl>
     </Grid>
   );
 };

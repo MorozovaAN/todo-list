@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { Header } from "../common/components/header/Header";
-
 import { ErrorSnackbar } from "../common/components/errorSnackbar/ErrorSnackbar";
-
 import { Navigate, Route, Routes } from "react-router-dom";
 import { me } from "../features/auth/authSlice/authThunk";
 import { useTypedSelector } from "../common/hooks/useTypedSelector";
