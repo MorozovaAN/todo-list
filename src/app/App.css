@@ -6,9 +6,12 @@
   min-height: calc(100vh - 64px);
   background-image: url("../assets/img/background-lists.jpeg");
   background-size: cover;
+  height: 100%;
 }
 
 .content--secondary {
   background-image: url("../assets/img/background.jpeg");
   background-size: cover;
+  height: 100%;
+  min-height: 100vh;
 }
