@@ -5,7 +5,7 @@ import "./CircularLoading.css";
 export const CircularLoading = () => {
   return (
     <div className="circular-loading">
-      <CircularProgress size={80} />
+      <CircularProgress size={60} />
     </div>
   );
 };
