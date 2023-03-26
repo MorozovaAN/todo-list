@@ -16,28 +16,43 @@ export const EditableSpan = memo(
     const inputOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       const title = e.currentTarget.value;
       setNewTitle(title);
-      setError(title.length > 80 ? "You can write 80 symbols or less" : "");
+      if (title.length > 100) {
+        setError("You can write 100 symbols or less");
+      } else if (!title.trim()) {
+        setError("Field cannot be empty");
+      } else {
+        setError("");
+      }
     };
 
     const changeTitleHandler = () => {
       if (newTitle !== title && !error) {
         callBack(newTitle.trim());
+        setEditMode(false);
       }
-      if (newTitle.length > 80) {
+      if (!newTitle.trim()) {
+        setEditMode(false);
         setNewTitle(title);
+        setError("");
       }
-      setError("");
-      setEditMode(false);
+    };
+
+    const inputOnKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "Enter" && e.shiftKey && !error) {
+        newTitle !== title && callBack(newTitle.trim());
+        setEditMode(false);
+      }
     };
 
     return editMode ? (
       <TextField
         onChange={inputOnChangeHandler}
-        onKeyUp={(e) => e.key === "Enter" && changeTitleHandler()}
+        onKeyDown={inputOnKeyDownHandler}
         onBlur={changeTitleHandler}
         label={error}
         value={newTitle}
         error={Boolean(error)}
+        maxRows={3}
         multiline
         autoFocus
         id="standard-basic"

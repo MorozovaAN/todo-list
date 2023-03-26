@@ -47,7 +47,11 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
         checked={checkedTask}
       />
 
-      <EditableSpan title={title} callBack={changeTaskTitleHandler} />
+      {status === TaskStatuses.New ? (
+        <EditableSpan title={title} callBack={changeTaskTitleHandler} />
+      ) : (
+        <p>{title}</p>
+      )}
 
       <IconButton
         onClick={() => deleteTasksTC({ todoListId, taskId: id })}
