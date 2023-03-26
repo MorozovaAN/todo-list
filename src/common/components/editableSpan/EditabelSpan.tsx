@@ -38,6 +38,7 @@ export const EditableSpan = memo(
         label={error}
         value={newTitle}
         error={Boolean(error)}
+        multiline
         autoFocus
         id="standard-basic"
         variant="standard"

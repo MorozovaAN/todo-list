@@ -43,6 +43,7 @@ export const AddItemForm = memo(
           value={title}
           error={Boolean(error)}
           placeholder={placeholder}
+          multiline
           id="standard-basic"
           variant="standard"
         />
