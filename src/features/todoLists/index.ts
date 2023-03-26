@@ -4,7 +4,7 @@ import { todoListsSlice } from "./todoListsSlice/todoListsSlice";
 import { TodoLists } from "./todoLists/TodoLists";
 import { TodoList } from "./todoLists/todoList/TodoList";
 
-const { todoListsSelector } = todoListsSelectors;
+const { todoListsSelector, updateTodoListIdSelector } = todoListsSelectors;
 const todoListsReducer = todoListsSlice.reducer;
 const todoListsActions = {
   ...todoListsSlice.actions,
@@ -12,6 +12,7 @@ const todoListsActions = {
 };
 
 export {
+  updateTodoListIdSelector,
   todoListsSelector,
   todoListsActions,
   todoListsReducer,

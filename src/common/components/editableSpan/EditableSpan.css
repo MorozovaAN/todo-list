@@ -7,4 +7,16 @@
 
 .editable-span__input {
   width: 100%;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+.editable-span__skeleton-wrapper {
+  width: 100%;
+}
+
+.editable-span__skeleton-wrapper .editable-span__skeleton {
+  width: 90%;
+  height: 23px;
+  border-radius: 4px;
 }

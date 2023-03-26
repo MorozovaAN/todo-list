@@ -8,20 +8,23 @@ export type TodoListDomainType = TodoListType & {
   entityStatus: RequestStatusType;
 };
 export type TodoListsType = TodoListDomainType[];
-const initialState: TodoListsType = [];
+const initialState = {
+  todoLists: [] as TodoListsType,
+  updateTodoListId: "",
+};
 
 export const todoListsSlice = createSlice({
   name: "todoLists",
   initialState,
   reducers: {
     setTodoLists: (state, action: PayloadAction<TodoListType[]>) => {
-      return action.payload.map((l: any) => {
-        return { ...l, filter: "all", entityStatus: "idle" };
+      state.todoLists = action.payload.map((tl: any) => {
+        return { ...tl, filter: "all", entityStatus: "idle" };
       });
     },
 
     createTodoList: (state, action: PayloadAction<TodoListType>) => {
-      state.unshift({
+      state.todoLists.unshift({
         ...action.payload,
         filter: "all",
         entityStatus: "idle",
@@ -29,16 +32,19 @@ export const todoListsSlice = createSlice({
     },
 
     deleteTodoList: (state, action: PayloadAction<{ todoListId: string }>) => {
-      return state.filter((l) => l.id !== action.payload.todoListId);
+      const index = state.todoLists.findIndex(
+        (tl) => tl.id === action.payload.todoListId
+      );
+      state.todoLists.splice(index, 1);
     },
 
     updateTodoListTitle: (
       state,
       action: PayloadAction<{ todoListId: string; title: string }>
     ) => {
-      state.forEach((l) => {
-        if (l.id === action.payload.todoListId) {
-          l.title = action.payload.title;
+      state.todoLists.forEach((tl) => {
+        if (tl.id === action.payload.todoListId) {
+          tl.title = action.payload.title;
         }
       });
     },
@@ -50,7 +56,7 @@ export const todoListsSlice = createSlice({
         entityStatus: RequestStatusType;
       }>
     ) => {
-      state.forEach((l) => {
+      state.todoLists.forEach((l) => {
         if (l.id === action.payload.todoListId) {
           l.entityStatus = action.payload.entityStatus;
         }
@@ -61,11 +67,14 @@ export const todoListsSlice = createSlice({
       state,
       action: PayloadAction<{ todoListId: string; filter: FilterValuesType }>
     ) => {
-      state.forEach((l) => {
+      state.todoLists.forEach((l) => {
         if (l.id === action.payload.todoListId) {
           l.filter = action.payload.filter;
         }
       });
+    },
+    setUpdateTodoListId: (state, action: PayloadAction<string>) => {
+      state.updateTodoListId = action.payload;
     },
   },
 });
@@ -76,4 +85,5 @@ export const {
   deleteTodoList,
   updateTodoListTitle,
   updateTodoListEntityStatus,
+  setUpdateTodoListId,
 } = todoListsSlice.actions;

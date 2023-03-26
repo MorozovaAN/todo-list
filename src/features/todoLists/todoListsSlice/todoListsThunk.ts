@@ -5,6 +5,7 @@ import {
   createTodoList,
   deleteTodoList,
   setTodoLists,
+  setUpdateTodoListId,
   updateTodoListEntityStatus,
   updateTodoListTitle,
 } from "./todoListsSlice";
@@ -88,19 +89,20 @@ export const updateTodoListTitleTC = createAsyncThunk<
 >(
   "todoLists/getTodoLists",
   async function ({ todoListId, title }, { dispatch }) {
-    dispatch(setStatus("loading"));
+    dispatch(setUpdateTodoListId(todoListId));
 
     try {
       const res = await todolistAPI.changeTodoListTitle(todoListId, title);
 
       if (res.data.resultCode === ResultStatus.OK) {
         dispatch(updateTodoListTitle({ todoListId, title }));
-        dispatch(setStatus("succeeded"));
       } else {
         handelServerAppError(dispatch, res.data);
       }
     } catch (error) {
       handelServerNetworkError(dispatch, error);
+    } finally {
+      dispatch(setUpdateTodoListId(""));
     }
   }
 );

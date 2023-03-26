@@ -1,17 +1,24 @@
-import React, { useState, ChangeEvent, memo } from "react";
+import React, { useState, ChangeEvent, memo, useEffect } from "react";
 import "./EditableSpan.css";
-import { TextField } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+import TextField from "@mui/material/TextField";
 
 type EditableSpanPropsType = {
   callBack: (newTitle: string) => void;
   title: string;
+  loading: boolean;
+  classes?: string;
 };
 
 export const EditableSpan = memo(
-  ({ title, callBack }: EditableSpanPropsType) => {
+  ({ loading, title, callBack, classes }: EditableSpanPropsType) => {
     const [newTitle, setNewTitle] = useState(title);
     const [editMode, setEditMode] = useState(false);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+      setNewTitle(title);
+    }, [title]);
 
     const inputOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       const title = e.currentTarget.value;
@@ -39,26 +46,16 @@ export const EditableSpan = memo(
 
     const inputOnKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter" && e.shiftKey && !error) {
-        newTitle !== title && callBack(newTitle.trim());
+        if (newTitle !== title) callBack(newTitle.trim());
+        else setNewTitle(title.trim());
         setEditMode(false);
       }
     };
 
-    return editMode ? (
-      <TextField
-        onChange={inputOnChangeHandler}
-        onKeyDown={inputOnKeyDownHandler}
-        onBlur={changeTitleHandler}
-        label={error}
-        value={newTitle}
-        error={Boolean(error)}
-        maxRows={3}
-        multiline
-        autoFocus
-        id="standard-basic"
-        variant="standard"
-        classes={{ root: "editable-span__input" }}
-      />
+    const text = loading ? (
+      <div className="editable-span__skeleton-wrapper">
+        <Skeleton className="editable-span__skeleton" variant="rectangular" />
+      </div>
     ) : (
       <span
         className="editable-span__title"
@@ -66,6 +63,26 @@ export const EditableSpan = memo(
       >
         {title}
       </span>
+    );
+    return editMode ? (
+      <div className={classes ? classes : ""}>
+        <TextField
+          onChange={inputOnChangeHandler}
+          onKeyDown={inputOnKeyDownHandler}
+          onBlur={changeTitleHandler}
+          label={error}
+          value={newTitle}
+          error={Boolean(error)}
+          maxRows={3}
+          multiline
+          autoFocus
+          id="standard-basic"
+          variant="standard"
+          classes={{ root: "editable-span__input" }}
+        />
+      </div>
+    ) : (
+      text
     );
   }
 );

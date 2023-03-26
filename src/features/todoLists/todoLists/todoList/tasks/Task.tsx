@@ -48,7 +48,11 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
       />
 
       {status === TaskStatuses.New ? (
-        <EditableSpan title={title} callBack={changeTaskTitleHandler} />
+        <EditableSpan
+          title={title}
+          callBack={changeTaskTitleHandler}
+          loading={false}
+        />
       ) : (
         <p>{title}</p>
       )}

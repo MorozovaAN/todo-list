@@ -12,12 +12,13 @@ import {
   updateTodoListTitleTC,
 } from "../../todoListsSlice/todoListsThunk";
 import { useAction } from "../../../../common/hooks/useActions";
-import { todoListsActions } from "../../index";
+import { todoListsActions, updateTodoListIdSelector } from "../../index";
 import { Task, TasksActions } from "./tasks";
 import { tasksFilter } from "../../../../common/utils/tasksFilter";
 import "./TodoList.css";
 import { TasksFilterButton } from "../../../../common/components/tasksFilterButton/TasksFilterButton";
 import { getInfoSubtitler } from "../../../../common/utils/getInfoSubtitler";
+import { useTypedSelector } from "../../../../common/hooks/useTypedSelector";
 
 type TodoListPropsType = {
   todoListId: string;
@@ -32,6 +33,7 @@ export const TodoList = memo<TodoListPropsType>(
     const { deleteTodoListTC, updateTodoListTitleTC, updateFilter } =
       useAction(todoListsActions);
     const { fetchTasks, createTasksTC } = useAction(TasksActions);
+    const updateTodoListId = useTypedSelector(updateTodoListIdSelector);
     const tasksForRender = tasksFilter(tasks, filter);
 
     useEffect(() => {
@@ -49,7 +51,12 @@ export const TodoList = memo<TodoListPropsType>(
     return (
       <div>
         <div className="todoList__title-wrapper">
-          <EditableSpan callBack={changeTodoListTitle} title={title} />
+          <EditableSpan
+            callBack={changeTodoListTitle}
+            title={title}
+            classes="todoList__title"
+            loading={updateTodoListId === todoListId}
+          />
 
           <IconButton
             onClick={() => deleteTodoListTC(todoListId)}
