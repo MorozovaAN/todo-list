@@ -13,6 +13,7 @@ import {
 import {
   createTask,
   deleteTask,
+  setUpdateTaskId,
   updateTask,
   UpdateTaskDomainModelType,
 } from "./tasksSlice";
@@ -95,9 +96,11 @@ export const updateTasksTC = createAsyncThunk<
 >(
   "tasks/updateTask",
   async ({ todoListId, taskId, domainModel }, { dispatch, getState }) => {
-    dispatch(setStatus("loading"));
+    dispatch(
+      domainModel.title ? setUpdateTaskId(taskId) : setStatus("loading")
+    );
 
-    const task = getState().tasks[todoListId].find(
+    const task = getState().tasks.tasks[todoListId].find(
       (t) => t.id === taskId
     ) as TaskType;
 
@@ -131,6 +134,8 @@ export const updateTasksTC = createAsyncThunk<
           : err.message;
         handelServerNetworkError(dispatch, error);
       }
+    } finally {
+      dispatch(setUpdateTaskId(""));
     }
   }
 );

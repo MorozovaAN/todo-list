@@ -73,6 +73,7 @@ export const todoListsSlice = createSlice({
         }
       });
     },
+
     setUpdateTodoListId: (state, action: PayloadAction<string>) => {
       state.updateTodoListId = action.payload;
     },

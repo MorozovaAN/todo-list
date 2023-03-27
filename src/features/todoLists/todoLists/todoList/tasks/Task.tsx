@@ -6,7 +6,8 @@ import { TaskStatuses, TaskType } from "../../../../../api/todolist-api";
 import { useAction } from "../../../../../common/hooks/useActions";
 import ClearIcon from "@mui/icons-material/Clear";
 import "./Task.css";
-import { TasksActions } from "./index";
+import { TasksActions, updateTaskIdSelector } from "./index";
+import { useTypedSelector } from "../../../../../common/hooks/useTypedSelector";
 
 type TaskPropsType = {
   task: TaskType;
@@ -16,6 +17,7 @@ type TaskPropsType = {
 export const Task = memo(({ task, todoListId }: TaskPropsType) => {
   const { id, title, status, ...restTaskProps } = task;
   const checkedTask = status === TaskStatuses.Completed;
+  const updateTaskId = useTypedSelector(updateTaskIdSelector);
   const { updateTasksTC, deleteTasksTC } = useAction(TasksActions);
 
   const changeTaskStatusHandler = (checked: boolean) => {
@@ -51,7 +53,7 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
         <EditableSpan
           title={title}
           callBack={changeTaskTitleHandler}
-          loading={false}
+          loading={id === updateTaskId}
         />
       ) : (
         <p>{title}</p>

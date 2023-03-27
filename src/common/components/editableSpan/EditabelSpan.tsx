@@ -65,22 +65,21 @@ export const EditableSpan = memo(
       </span>
     );
     return editMode ? (
-      <div className={classes ? classes : ""}>
-        <TextField
-          onChange={inputOnChangeHandler}
-          onKeyDown={inputOnKeyDownHandler}
-          onBlur={changeTitleHandler}
-          label={error}
-          value={newTitle}
-          error={Boolean(error)}
-          maxRows={3}
-          multiline
-          autoFocus
-          id="standard-basic"
-          variant="standard"
-          classes={{ root: "editable-span__input" }}
-        />
-      </div>
+      // <div className={classes ? classes : ""}>
+      <TextField
+        onChange={inputOnChangeHandler}
+        onKeyDown={inputOnKeyDownHandler}
+        onBlur={changeTitleHandler}
+        label={error}
+        value={newTitle}
+        error={Boolean(error)}
+        maxRows={3}
+        multiline
+        autoFocus
+        id="standard-basic"
+        variant="standard"
+        classes={{ root: "editable-span__input" }}
+      />
     ) : (
       text
     );
