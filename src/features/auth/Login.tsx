@@ -34,17 +34,17 @@ export const Login = () => {
       const errors: FormikErrorType = {};
 
       if (!values.email) {
-        errors.email = "Field is required";
+        errors.email = "Обязательное поле";
       } else if (
         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
       ) {
-        errors.email = "Invalid email address";
+        errors.email = "Не корректный адрес почты";
       }
 
       if (!values.password) {
-        errors.password = "Field is required";
+        errors.password = "Обязательное поле";
       } else if (values.password.length < 6) {
-        errors.password = "Password must be 6 symbols or more";
+        errors.password = "Пароль должен содержать не менее 6 символов";
       }
 
       return errors;
@@ -69,7 +69,7 @@ export const Login = () => {
   return (
     <Grid container justifyContent="center" rowGap="30px">
       <FormControl>
-        <h2 className="login__form-title">Sign in Todo lists app</h2>
+        <h2 className="login__form-title">Вход в приложение Todo lists</h2>
 
         <form onSubmit={formik.handleSubmit} className="login__form">
           <FormGroup classes={{ root: "login__form-container" }}>
@@ -77,7 +77,7 @@ export const Login = () => {
               label={
                 formik.touched.email && formik.errors.email
                   ? formik.errors.email
-                  : "Email"
+                  : "Почта"
               }
               margin="normal"
               error={!!(formik.touched.email && formik.errors.email)}
@@ -89,7 +89,7 @@ export const Login = () => {
               label={
                 formik.touched.password && formik.errors.password
                   ? formik.errors.password
-                  : "Password"
+                  : "Пароль"
               }
               error={!!(formik.touched.password && formik.errors.password)}
               margin="normal"
@@ -97,7 +97,7 @@ export const Login = () => {
             />
 
             <FormControlLabel
-              label="Remember me"
+              label="Запомнить меня"
               control={
                 <Checkbox
                   {...formik.getFieldProps("rememberMe")}
@@ -108,10 +108,10 @@ export const Login = () => {
 
             <div className="login__form__buttons">
               <Button type="submit" variant="contained" color="primary">
-                Login
+                Войти
               </Button>
               <Button variant="outlined" onClick={useDemoAccountHandler}>
-                Use demo account
+                Демо-аккаунт
               </Button>
             </div>
 
@@ -120,7 +120,7 @@ export const Login = () => {
               href="https://social-network.samuraijs.com/"
               target="_blank"
             >
-              Sign up
+              Зарегистрироваться
             </a>
           </FormGroup>
         </form>
