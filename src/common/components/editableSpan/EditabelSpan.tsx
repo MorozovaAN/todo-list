@@ -24,9 +24,9 @@ export const EditableSpan = memo(
       const title = e.currentTarget.value;
       setNewTitle(title);
       if (title.length > 100) {
-        setError("You can write 100 symbols or less");
+        setError("Возможно не более 100 символов");
       } else if (!title.trim()) {
-        setError("Field cannot be empty");
+        setError("Поле не может быть пустым");
       } else {
         setError("");
       }

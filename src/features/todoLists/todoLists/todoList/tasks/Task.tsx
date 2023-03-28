@@ -15,7 +15,7 @@ type TaskPropsType = {
 };
 
 export const Task = memo(({ task, todoListId }: TaskPropsType) => {
-  const { id, title, status, ...restTaskProps } = task;
+  const { id, title, status } = task;
   const checkedTask = status === TaskStatuses.Completed;
   const updateTaskId = useTypedSelector(updateTaskIdSelector);
   const { updateTasksTC, deleteTasksTC } = useAction(TasksActions);

@@ -24,7 +24,7 @@ export const Header = () => {
               classes={{ root: "header__logout-btn" }}
               onClick={() => logout()}
             >
-              Log out <LogoutIcon />
+              выйти <LogoutIcon />
             </Button>
           )}
         </Toolbar>

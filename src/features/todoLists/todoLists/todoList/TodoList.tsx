@@ -17,7 +17,7 @@ import { Task, TasksActions } from "./tasks";
 import { tasksFilter } from "../../../../common/utils/tasksFilter";
 import "./TodoList.css";
 import { TasksFilterButton } from "../../../../common/components/tasksFilterButton/TasksFilterButton";
-import { getInfoSubtitler } from "../../../../common/utils/getInfoSubtitler";
+import { getInfoSubtitle } from "../../../../common/utils/getInfoSubtitle";
 import { useTypedSelector } from "../../../../common/hooks/useTypedSelector";
 
 type TodoListPropsType = {
@@ -72,7 +72,7 @@ export const TodoList = memo<TodoListPropsType>(
         <AddItemForm
           callback={(title: string) => createTasksTC({ todoListId, title })}
           disabled={entityStatus === "loading"}
-          placeholder="write your task"
+          placeholder="новая задача"
         />
 
         <ul className="todoList__tasks">
@@ -81,25 +81,23 @@ export const TodoList = memo<TodoListPropsType>(
               <Task key={t.id} todoListId={todoListId} task={t} />
             ))
           ) : (
-            <p className="todoList__info-subtitle">
-              {getInfoSubtitler(filter)}
-            </p>
+            <p className="todoList__info-subtitle">{getInfoSubtitle(filter)}</p>
           )}
         </ul>
 
         <div className="todoList__buttons-wrapper">
           <TasksFilterButton
-            label="all"
+            label="все"
             variant={filter === "all"}
             callback={setTaskFilterHandler}
           />
           <TasksFilterButton
-            label="active"
+            label="активные"
             variant={filter === "active"}
             callback={setTaskFilterHandler}
           />
           <TasksFilterButton
-            label="completed"
+            label="сделанные"
             variant={filter === "completed"}
             callback={setTaskFilterHandler}
           />

@@ -1,6 +1,7 @@
 import React, { ChangeEvent, memo, useState } from "react";
 import "./AddItemForm.css";
-import { Button, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 type AddItemFormPropsType = {
   callback: (title: string) => void;
@@ -17,7 +18,7 @@ export const AddItemForm = memo(
       const title = e.currentTarget.value;
       error && setError("");
       setTitle(title);
-      title.trim().length > 80 && setError("You can write 80 symbols or less");
+      title.trim().length > 100 && setError("Возможно не более 100 символов");
     };
 
     const addItemHandler = () => {
@@ -27,7 +28,7 @@ export const AddItemForm = memo(
         callback(newTitle);
         setTitle("");
       } else {
-        setError("Title is required");
+        setError("Поле не может быть пустым");
       }
     };
 

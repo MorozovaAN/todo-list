@@ -28,7 +28,7 @@ export const TodoLists = () => {
       <Paper classes={{ root: "todoLists__add-item" }}>
         <AddItemForm
           callback={createTodoList}
-          placeholder="write title for new todo list"
+          placeholder="название нового списка задач"
         />
       </Paper>
 

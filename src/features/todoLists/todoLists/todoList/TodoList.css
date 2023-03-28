@@ -30,8 +30,9 @@
 
 .todoList__buttons-wrapper {
   display: flex;
-  gap: 10px;
-  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .todoList__title {

@@ -6,14 +6,25 @@ import "./TasksFilterButton.css";
 type TasksFilterButtonPropsType = {
   callback: (filter: FilterValuesType) => void;
   variant: boolean;
-  label: FilterValuesType;
+  label: "сделанные" | "активные" | "все";
 };
 
 export const TasksFilterButton = memo(
   ({ variant, label, callback }: TasksFilterButtonPropsType) => {
+    const onClickHandler = () => {
+      let value = "all" as FilterValuesType;
+      switch (label) {
+        case "активные":
+          value = "active";
+          break;
+        case "сделанные":
+          value = "completed";
+      }
+      callback(value);
+    };
     return (
       <Button
-        onClick={() => callback(label)}
+        onClick={onClickHandler}
         variant={variant ? "contained" : "outlined"}
         classes={{ root: "todoList__buttons-btn" }}
         size="small"
