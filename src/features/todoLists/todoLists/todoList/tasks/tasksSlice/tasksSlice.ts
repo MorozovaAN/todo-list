@@ -46,19 +46,18 @@ export const tasksSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(todoListsActions.setTodoLists, (state, action) => {
-      action.payload.forEach((tl) => (state.tasks[tl.id] = []));
-    });
-
-    builder.addCase(todoListsActions.addTodoList, (state, action) => {
-      state.tasks[action.payload.id] = [];
-    });
-
-    builder.addCase(todoListsActions.removeTodoList, (state, action) => {
-      delete state.tasks[action.payload.todoListId];
-    });
-    builder.addCase(fetchTasks.fulfilled, (state, action) => {
-      state.tasks[action.payload.todolistId] = action.payload.tasks;
-    });
+    builder
+      .addCase(todoListsActions.setTodoLists, (state, action) => {
+        action.payload.forEach((tl) => (state.tasks[tl.id] = []));
+      })
+      .addCase(todoListsActions.addTodoList, (state, action) => {
+        state.tasks[action.payload.id] = [];
+      })
+      .addCase(todoListsActions.removeTodoList, (state, action) => {
+        delete state.tasks[action.payload.todoListId];
+      })
+      .addCase(fetchTasks.fulfilled, (state, action) => {
+        state.tasks[action.payload.todolistId] = action.payload.tasks;
+      });
   },
 });
