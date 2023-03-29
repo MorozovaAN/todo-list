@@ -1,32 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  TaskPriorities,
-  TaskStatuses,
-  TaskType,
-} from "../../../../../../api/todolist-api";
+import { TaskType } from "../../../../../../api/types";
 import { fetchTasks } from "./tasksThunk";
 import { todoListsActions } from "../../../../index";
-
-type TasksType = {
-  [key: string]: TaskType[];
-};
-const initialState = {
-  tasks: {} as TasksType,
-  updateTaskId: "",
-};
+import { TasksType, UpdateTaskDomainModelType } from "../types";
 
 export const tasksSlice = createSlice({
   name: "tasks",
-  initialState,
+  initialState: {
+    tasks: {} as TasksType,
+    updateTaskId: "",
+  },
   reducers: {
-    createTask: (
+    addTask: (
       state,
       action: PayloadAction<{ todoListId: string; task: TaskType }>
     ) => {
       state.tasks[action.payload.todoListId].unshift(action.payload.task);
     },
 
-    deleteTask: (
+    removeTask: (
       state,
       action: PayloadAction<{ todoListId: string; taskId: string }>
     ) => {
@@ -35,7 +27,7 @@ export const tasksSlice = createSlice({
       tasks.splice(index, 1);
     },
 
-    updateTask: (
+    changeTask: (
       state,
       action: PayloadAction<{
         todoListId: string;
@@ -58,11 +50,11 @@ export const tasksSlice = createSlice({
       action.payload.forEach((tl) => (state.tasks[tl.id] = []));
     });
 
-    builder.addCase(todoListsActions.createTodoList, (state, action) => {
+    builder.addCase(todoListsActions.addTodoList, (state, action) => {
       state.tasks[action.payload.id] = [];
     });
 
-    builder.addCase(todoListsActions.deleteTodoList, (state, action) => {
+    builder.addCase(todoListsActions.removeTodoList, (state, action) => {
       delete state.tasks[action.payload.todoListId];
     });
     builder.addCase(fetchTasks.fulfilled, (state, action) => {
@@ -70,16 +62,3 @@ export const tasksSlice = createSlice({
     });
   },
 });
-
-export const { createTask, deleteTask, updateTask, setUpdateTaskId } =
-  tasksSlice.actions;
-
-export type UpdateTaskDomainModelType = {
-  title?: string;
-  description?: string;
-  completed?: boolean;
-  status?: TaskStatuses;
-  priority?: TaskPriorities;
-  startDate?: string;
-  deadline?: string;
-};

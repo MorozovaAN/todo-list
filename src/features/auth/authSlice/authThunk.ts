@@ -1,16 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  authAPI,
-  LoginDataType,
-  ResultStatus,
-} from "../../../api/todolist-api";
+import { authAPI } from "../../../api/todolist-api";
 import {
   handelServerAppError,
   handelServerNetworkError,
 } from "../../../common/utils/errorUtils";
-import { setIsLoggedIn } from "./authSlice";
 import { AppDispatchType } from "../../../common/hooks/useTypedDispatch";
 import { setInitialized, setStatus } from "../../../app";
+import { authActions } from "../index";
+import { LoginDataType, ResultStatus } from "../../../api/types";
 
 export const me = createAsyncThunk<
   void,
@@ -20,7 +17,7 @@ export const me = createAsyncThunk<
   try {
     const res = await authAPI.me();
     if (res.data.resultCode === ResultStatus.OK) {
-      dispatch(setIsLoggedIn(true));
+      dispatch(authActions.setIsLoggedIn(true));
       dispatch(setStatus("succeeded"));
     }
   } finally {
@@ -61,7 +58,7 @@ export const logout = createAsyncThunk<
   try {
     const res = await authAPI.logout();
     if (res.data.resultCode === ResultStatus.OK) {
-      dispatch(setIsLoggedIn(false));
+      dispatch(authActions.setIsLoggedIn(false));
       dispatch(setStatus("succeeded"));
     } else {
       handelServerAppError(dispatch, res.data);

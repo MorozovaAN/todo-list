@@ -2,24 +2,19 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatchType } from "../../../../../../common/hooks/useTypedDispatch";
 import {
   ResultStatus,
-  tasksAPI,
   TaskType,
   UpdateTaskModelType,
-} from "../../../../../../api/todolist-api";
+} from "../../../../../../api/types";
 import {
   handelServerAppError,
   handelServerNetworkError,
 } from "../../../../../../common/utils/errorUtils";
-import {
-  createTask,
-  deleteTask,
-  setUpdateTaskId,
-  updateTask,
-  UpdateTaskDomainModelType,
-} from "./tasksSlice";
 import axios, { AxiosError } from "axios";
 import { AppRootStateType } from "../../../../../../store/store";
 import { setStatus } from "../../../../../../app";
+import { tasksActions } from "../index";
+import { UpdateTaskDomainModelType } from "../types";
+import { tasksAPI } from "../../../../../../api/todolist-api";
 
 export const fetchTasks = createAsyncThunk<
   { todolistId: string; tasks: TaskType[] },
@@ -45,7 +40,7 @@ export const fetchTasks = createAsyncThunk<
   // }
 });
 
-export const deleteTasksTC = createAsyncThunk<
+export const deleteTasks = createAsyncThunk<
   void,
   { todoListId: string; taskId: string },
   { dispatch: AppDispatchType }
@@ -54,14 +49,14 @@ export const deleteTasksTC = createAsyncThunk<
 
   try {
     await tasksAPI.deleteTask(todoListId, taskId);
-    dispatch(deleteTask({ todoListId, taskId }));
+    dispatch(tasksActions.removeTask({ todoListId, taskId }));
     dispatch(setStatus("succeeded"));
   } catch (error) {
     handelServerNetworkError(dispatch, error);
   }
 });
 
-export const createTasksTC = createAsyncThunk<
+export const createTasks = createAsyncThunk<
   void,
   { todoListId: string; title: string },
   { dispatch: AppDispatchType }
@@ -71,7 +66,7 @@ export const createTasksTC = createAsyncThunk<
   try {
     const res = await tasksAPI.createTask(todoListId, title);
     if (res.data.resultCode === ResultStatus.OK) {
-      dispatch(createTask({ todoListId, task: res.data.data.item }));
+      dispatch(tasksActions.addTask({ todoListId, task: res.data.data.item }));
       dispatch(setStatus("succeeded"));
     } else {
       handelServerAppError<{ item: TaskType }>(dispatch, res.data);
@@ -97,7 +92,9 @@ export const updateTasksTC = createAsyncThunk<
   "tasks/updateTask",
   async ({ todoListId, taskId, domainModel }, { dispatch, getState }) => {
     dispatch(
-      domainModel.title ? setUpdateTaskId(taskId) : setStatus("loading")
+      domainModel.title
+        ? tasksActions.setUpdateTaskId(taskId)
+        : setStatus("loading")
     );
 
     const task = getState().tasks.tasks[todoListId].find(
@@ -120,7 +117,11 @@ export const updateTasksTC = createAsyncThunk<
 
       if (res.data.resultCode === ResultStatus.OK) {
         dispatch(
-          updateTask({ todoListId, taskId, domainModel: res.data.data.item })
+          tasksActions.changeTask({
+            todoListId,
+            taskId,
+            domainModel: res.data.data.item,
+          })
         );
         dispatch(setStatus("succeeded"));
       } else {
@@ -135,7 +136,7 @@ export const updateTasksTC = createAsyncThunk<
         handelServerNetworkError(dispatch, error);
       }
     } finally {
-      dispatch(setUpdateTaskId(""));
+      dispatch(tasksActions.setUpdateTaskId(""));
     }
   }
 );

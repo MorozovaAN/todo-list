@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import Button from "@mui/material/Button";
-import { FilterValuesType } from "../../../features/todoLists/todoListsSlice/todoListsSlice";
+import { FilterValuesType } from "../../../features/todoLists/types";
 import "./TasksFilterButton.css";
 
 type TasksFilterButtonPropsType = {

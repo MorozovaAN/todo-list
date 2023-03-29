@@ -1,32 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ResultStatus, todolistAPI } from "../../../api/todolist-api";
+import { todolistAPI } from "../../../api/todolist-api";
 import { AppDispatchType } from "../../../common/hooks/useTypedDispatch";
-import {
-  createTodoList,
-  deleteTodoList,
-  setTodoLists,
-  setUpdateTodoListId,
-  updateTodoListEntityStatus,
-  updateTodoListTitle,
-} from "./todoListsSlice";
 import {
   handelServerAppError,
   handelServerNetworkError,
 } from "../../../common/utils/errorUtils";
 import { setStatus } from "../../../app";
+import { todoListsActions } from "../index";
+import { ResultStatus } from "../../../api/types";
 
-export const getTodoLists = createAsyncThunk<
+export const fetchTodoLists = createAsyncThunk<
   void,
   undefined,
   { dispatch: AppDispatchType }
->("todoLists/getTodoLists", async function (_, { dispatch }) {
+>("todoLists/fetchTodoLists", async function (_, { dispatch }) {
   dispatch(setStatus("loading"));
 
   try {
     const res = await todolistAPI.getTodoLists();
 
     if (res.data) {
-      dispatch(setTodoLists(res.data));
+      dispatch(todoListsActions.setTodoLists(res.data));
       dispatch(setStatus("succeeded"));
     }
   } catch (error) {
@@ -34,7 +28,7 @@ export const getTodoLists = createAsyncThunk<
   }
 });
 
-export const createTodoListTC = createAsyncThunk<
+export const createTodoList = createAsyncThunk<
   void,
   string,
   { dispatch: AppDispatchType }
@@ -45,7 +39,7 @@ export const createTodoListTC = createAsyncThunk<
     const res = await todolistAPI.createTodoList(title);
 
     if (res.data.resultCode === ResultStatus.OK) {
-      dispatch(createTodoList(res.data.data.item));
+      dispatch(todoListsActions.addTodoList(res.data.data.item));
       dispatch(setStatus("succeeded"));
     } else {
       handelServerAppError(dispatch, res.data);
@@ -55,7 +49,7 @@ export const createTodoListTC = createAsyncThunk<
   }
 });
 
-export const deleteTodoListTC = createAsyncThunk<
+export const deleteTodoList = createAsyncThunk<
   void,
   string,
   { dispatch: AppDispatchType }
@@ -66,7 +60,7 @@ export const deleteTodoListTC = createAsyncThunk<
     const res = await todolistAPI.deleteTodoList(todoListId);
 
     if (res.data.resultCode === ResultStatus.OK) {
-      dispatch(deleteTodoList({ todoListId: todoListId }));
+      dispatch(todoListsActions.removeTodoList({ todoListId: todoListId }));
       dispatch(setStatus("succeeded"));
     } else {
       handelServerAppError(dispatch, res.data);
@@ -74,7 +68,7 @@ export const deleteTodoListTC = createAsyncThunk<
   } catch (error) {
     handelServerNetworkError(dispatch, error);
     dispatch(
-      updateTodoListEntityStatus({
+      todoListsActions.changeTodoListEntityStatus({
         todoListId: todoListId,
         entityStatus: "failed",
       })
@@ -82,27 +76,27 @@ export const deleteTodoListTC = createAsyncThunk<
   }
 });
 
-export const updateTodoListTitleTC = createAsyncThunk<
+export const updateTodoListTitle = createAsyncThunk<
   void,
   { todoListId: string; title: string },
   { dispatch: AppDispatchType }
 >(
   "todoLists/getTodoLists",
   async function ({ todoListId, title }, { dispatch }) {
-    dispatch(setUpdateTodoListId(todoListId));
+    dispatch(todoListsActions.setUpdateTodoListId(todoListId));
 
     try {
       const res = await todolistAPI.changeTodoListTitle(todoListId, title);
 
       if (res.data.resultCode === ResultStatus.OK) {
-        dispatch(updateTodoListTitle({ todoListId, title }));
+        dispatch(todoListsActions.changeTodoListTitle({ todoListId, title }));
       } else {
         handelServerAppError(dispatch, res.data);
       }
     } catch (error) {
       handelServerNetworkError(dispatch, error);
     } finally {
-      dispatch(setUpdateTodoListId(""));
+      dispatch(todoListsActions.setUpdateTodoListId(""));
     }
   }
 );

@@ -1,5 +1,5 @@
-import { FilterValuesType } from "../../features/todoLists/todoListsSlice/todoListsSlice";
-import { TaskStatuses, TaskType } from "../../api/todolist-api";
+import { FilterValuesType } from "../../features/todoLists/types";
+import { TaskStatuses, TaskType } from "../../api/types";
 
 export const tasksFilter = (tasks: TaskType[], filter: FilterValuesType) => {
   switch (filter) {

@@ -16,5 +16,3 @@ export const authSlice = createSlice({
     });
   },
 });
-
-export const { setIsLoggedIn } = authSlice.actions;

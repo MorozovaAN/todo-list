@@ -1,4 +1,4 @@
-import { FilterValuesType } from "../../features/todoLists/todoListsSlice/todoListsSlice";
+import { FilterValuesType } from "../../features/todoLists/types";
 
 export const getInfoSubtitle = (filter: FilterValuesType): string => {
   switch (filter) {

@@ -8,10 +8,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import { Navigate } from "react-router-dom";
-import { useTypedSelector } from "../../common/hooks/useTypedSelector";
-import { login } from "./authSlice/authThunk";
-import { authActions, isLoggedInSelector } from "./index";
-import { useAction } from "../../common/hooks/useActions";
+import { useTypedSelector } from "../../../common/hooks/useTypedSelector";
+import { login } from "../authSlice/authThunk";
+import { authActions, isLoggedInSelector } from "../index";
+import { useAction } from "../../../common/hooks/useActions";
 import "./Login.css";
 
 type FormikErrorType = {

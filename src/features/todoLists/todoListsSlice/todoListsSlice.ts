@@ -1,21 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TodoListType } from "../../../api/types";
 import { RequestStatusType } from "../../../app/appSlice/appSlice";
-import { TodoListType } from "../../../api/todolist-api";
-
-export type FilterValuesType = "all" | "active" | "completed";
-export type TodoListDomainType = TodoListType & {
-  filter: FilterValuesType;
-  entityStatus: RequestStatusType;
-};
-export type TodoListsType = TodoListDomainType[];
-const initialState = {
-  todoLists: [] as TodoListsType,
-  updateTodoListId: "",
-};
+import { FilterValuesType, TodoListsType } from "../types";
 
 export const todoListsSlice = createSlice({
   name: "todoLists",
-  initialState,
+  initialState: {
+    todoLists: [] as TodoListsType,
+    updateTodoListId: "",
+  },
   reducers: {
     setTodoLists: (state, action: PayloadAction<TodoListType[]>) => {
       state.todoLists = action.payload.map((tl: any) => {
@@ -23,7 +16,7 @@ export const todoListsSlice = createSlice({
       });
     },
 
-    createTodoList: (state, action: PayloadAction<TodoListType>) => {
+    addTodoList: (state, action: PayloadAction<TodoListType>) => {
       state.todoLists.unshift({
         ...action.payload,
         filter: "all",
@@ -31,14 +24,14 @@ export const todoListsSlice = createSlice({
       });
     },
 
-    deleteTodoList: (state, action: PayloadAction<{ todoListId: string }>) => {
+    removeTodoList: (state, action: PayloadAction<{ todoListId: string }>) => {
       const index = state.todoLists.findIndex(
         (tl) => tl.id === action.payload.todoListId
       );
       state.todoLists.splice(index, 1);
     },
 
-    updateTodoListTitle: (
+    changeTodoListTitle: (
       state,
       action: PayloadAction<{ todoListId: string; title: string }>
     ) => {
@@ -49,7 +42,7 @@ export const todoListsSlice = createSlice({
       });
     },
 
-    updateTodoListEntityStatus: (
+    changeTodoListEntityStatus: (
       state,
       action: PayloadAction<{
         todoListId: string;
@@ -63,7 +56,7 @@ export const todoListsSlice = createSlice({
       });
     },
 
-    updateFilter: (
+    changeFilter: (
       state,
       action: PayloadAction<{ todoListId: string; filter: FilterValuesType }>
     ) => {
@@ -79,12 +72,3 @@ export const todoListsSlice = createSlice({
     },
   },
 });
-
-export const {
-  setTodoLists,
-  createTodoList,
-  deleteTodoList,
-  updateTodoListTitle,
-  updateTodoListEntityStatus,
-  setUpdateTodoListId,
-} = todoListsSlice.actions;

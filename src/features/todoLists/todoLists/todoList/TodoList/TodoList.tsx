@@ -1,24 +1,24 @@
 import React, { memo, useCallback, useEffect } from "react";
-import { AddItemForm } from "../../../../common/components/addItemForm/AddItemForm";
-import { EditableSpan } from "../../../../common/components/editableSpan/EditabelSpan";
-import { createTasksTC, fetchTasks } from "./tasks/tasksSlice/tasksThunk";
-import { TaskType } from "../../../../api/todolist-api";
+import { AddItemForm } from "../../../../../common/components/addItemForm/AddItemForm";
+import { EditableSpan } from "../../../../../common/components/editableSpan/EditabelSpan";
+import { createTasks, fetchTasks } from "../tasks/tasksSlice/tasksThunk";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import { RequestStatusType } from "../../../../app/appSlice/appSlice";
-import { FilterValuesType } from "../../todoListsSlice/todoListsSlice";
+import { RequestStatusType } from "../../../../../app/appSlice/appSlice";
 import {
-  deleteTodoListTC,
-  updateTodoListTitleTC,
-} from "../../todoListsSlice/todoListsThunk";
-import { useAction } from "../../../../common/hooks/useActions";
-import { todoListsActions, updateTodoListIdSelector } from "../../index";
-import { Task, TasksActions } from "./tasks";
-import { tasksFilter } from "../../../../common/utils/tasksFilter";
+  deleteTodoList,
+  updateTodoListTitle,
+} from "../../../todoListsSlice/todoListsThunk";
+import { useAction } from "../../../../../common/hooks/useActions";
+import { todoListsActions, updateTodoListIdSelector } from "../../../index";
+import { Task, tasksActions } from "../tasks";
+import { tasksFilter } from "../../../../../common/utils/tasksFilter";
 import "./TodoList.css";
-import { TasksFilterButton } from "../../../../common/components/tasksFilterButton/TasksFilterButton";
-import { getInfoSubtitle } from "../../../../common/utils/getInfoSubtitle";
-import { useTypedSelector } from "../../../../common/hooks/useTypedSelector";
+import { TasksFilterButton } from "../../../../../common/components/tasksFilterButton/TasksFilterButton";
+import { getInfoSubtitle } from "../../../../../common/utils/getInfoSubtitle";
+import { useTypedSelector } from "../../../../../common/hooks/useTypedSelector";
+import { TaskType } from "../../../../../api/types";
+import { FilterValuesType } from "../../../types";
 
 type TodoListPropsType = {
   todoListId: string;
@@ -30,9 +30,9 @@ type TodoListPropsType = {
 
 export const TodoList = memo<TodoListPropsType>(
   ({ todoListId, title, tasks, filter, entityStatus }) => {
-    const { deleteTodoListTC, updateTodoListTitleTC, updateFilter } =
+    const { deleteTodoList, updateTodoListTitle, changeFilter } =
       useAction(todoListsActions);
-    const { fetchTasks, createTasksTC } = useAction(TasksActions);
+    const { fetchTasks, createTasks } = useAction(tasksActions);
     const updateTodoListId = useTypedSelector(updateTodoListIdSelector);
     const tasksForRender = tasksFilter(tasks, filter);
 
@@ -41,11 +41,11 @@ export const TodoList = memo<TodoListPropsType>(
     }, []);
 
     const changeTodoListTitle = useCallback((newTitle: string) => {
-      updateTodoListTitleTC({ todoListId, title: newTitle });
+      updateTodoListTitle({ todoListId, title: newTitle });
     }, []);
 
     const setTaskFilterHandler = useCallback((filter: FilterValuesType) => {
-      updateFilter({ todoListId, filter });
+      changeFilter({ todoListId, filter });
     }, []);
 
     return (
@@ -59,7 +59,7 @@ export const TodoList = memo<TodoListPropsType>(
           />
 
           <IconButton
-            onClick={() => deleteTodoListTC(todoListId)}
+            onClick={() => deleteTodoList(todoListId)}
             disabled={entityStatus === "loading"}
             className="todoList__btn--delete"
             aria-label="delete"
@@ -70,7 +70,7 @@ export const TodoList = memo<TodoListPropsType>(
         </div>
 
         <AddItemForm
-          callback={(title: string) => createTasksTC({ todoListId, title })}
+          callback={(title: string) => createTasks({ todoListId, title })}
           disabled={entityStatus === "loading"}
           placeholder="новая задача"
         />
