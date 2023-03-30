@@ -24,11 +24,11 @@ export const AddItemForm = memo(
     const addItemHandler = () => {
       const newTitle = title.trim();
 
-      if (newTitle) {
+      !newTitle && setError("Поле не может быть пустым");
+
+      if (newTitle && !error) {
         callback(newTitle);
         setTitle("");
-      } else {
-        setError("Поле не может быть пустым");
       }
     };
 
@@ -36,7 +36,7 @@ export const AddItemForm = memo(
       <div className="add-item-form">
         <TextField
           onChange={inputOnChangeHandler}
-          onKeyUp={(e) => e.key === "Enter" && addItemHandler()}
+          onKeyUp={(e) => e.key === "Enter" && e.shiftKey && addItemHandler()}
           onBlur={() => setError("")}
           label={error}
           classes={{ root: "add-item-form__input" }}

@@ -11,33 +11,29 @@ import {
 } from "../../../../../../common/utils/errorUtils";
 import axios, { AxiosError } from "axios";
 import { AppRootStateType } from "../../../../../../store/store";
-import { setStatus } from "../../../../../../app";
+import { setError, setStatus } from "../../../../../../app";
 import { tasksActions } from "../index";
 import { UpdateTaskDomainModelType } from "../types";
 import { tasksAPI } from "../../../../../../api/todolist-api";
 
 export const fetchTasks = createAsyncThunk<
-  { todolistId: string; tasks: TaskType[] },
+  void,
   string,
   { dispatch: AppDispatchType }
->("tasks/fetchTasks", async (todolistId, { dispatch }) => {
-  dispatch(setStatus("loading"));
-  const res = await tasksAPI.getTasks(todolistId);
-  dispatch(setStatus("succeeded"));
-  return { todolistId, tasks: res.data.items };
+>("tasks/fetchTasks", async (todoListId, { dispatch }) => {
+  try {
+    const res = await tasksAPI.getTasks(todoListId);
 
-  //   const res = await tasksAPI.getTasks(todolistId);
-  //   return { todolistId, tasks: res.data.items };
-  //   // if (res.data.error === null) {
-  //   //   dispatch(setTasks({ todolistId, tasks: res.data.items }));
-  //   //   dispatch(setStatus("succeeded"));
-  //   // } else {
-  //   //   dispatch(setError(res.data.error));
-  //   //   dispatch(setStatus("failed"));
-  //   // }
-  // } catch (error) {
-  //   handelServerNetworkError(dispatch, error);
-  // }
+    if (res.data.error === null) {
+      dispatch(tasksActions.setTasks({ todoListId, tasks: res.data.items }));
+      dispatch(setStatus("succeeded"));
+    } else {
+      dispatch(setError(res.data.error));
+      dispatch(setStatus("failed"));
+    }
+  } catch (error) {
+    handelServerNetworkError(dispatch, error);
+  }
 });
 
 export const deleteTasks = createAsyncThunk<

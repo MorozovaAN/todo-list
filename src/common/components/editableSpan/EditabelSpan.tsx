@@ -35,13 +35,12 @@ export const EditableSpan = memo(
     const changeTitleHandler = () => {
       if (newTitle !== title && !error) {
         callBack(newTitle.trim());
-        setEditMode(false);
       }
       if (!newTitle.trim()) {
-        setEditMode(false);
         setNewTitle(title);
         setError("");
       }
+      setEditMode(false);
     };
 
     const inputOnKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -65,7 +64,6 @@ export const EditableSpan = memo(
       </span>
     );
     return editMode ? (
-      // <div className={classes ? classes : ""}>
       <TextField
         onChange={inputOnChangeHandler}
         onKeyDown={inputOnKeyDownHandler}
