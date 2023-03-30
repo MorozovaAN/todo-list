@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/todo-lists-app/static/css/main.3dfb257f.css",
-    "main.js": "/todo-lists-app/static/js/main.49b76b1d.js",
-    "static/media/background-lists.jpeg": "/todo-lists-app/static/media/background-lists.7354206af068b365a11e.jpeg",
-    "static/media/background.jpeg": "/todo-lists-app/static/media/background.52ed91591a9f3397d18b.jpeg",
-    "index.html": "/todo-lists-app/index.html",
-    "main.3dfb257f.css.map": "/todo-lists-app/static/css/main.3dfb257f.css.map",
-    "main.49b76b1d.js.map": "/todo-lists-app/static/js/main.49b76b1d.js.map"
+    "main.css": "/todo-list/static/css/main.65ec5300.css",
+    "main.js": "/todo-list/static/js/main.49b76b1d.js",
+    "static/media/background-lists.jpeg": "/todo-list/static/media/background-lists.7354206af068b365a11e.jpeg",
+    "static/media/background.jpeg": "/todo-list/static/media/background.52ed91591a9f3397d18b.jpeg",
+    "index.html": "/todo-list/index.html",
+    "main.65ec5300.css.map": "/todo-list/static/css/main.65ec5300.css.map",
+    "main.49b76b1d.js.map": "/todo-list/static/js/main.49b76b1d.js.map"
   },
   "entrypoints": [
-    "static/css/main.3dfb257f.css",
+    "static/css/main.65ec5300.css",
     "static/js/main.49b76b1d.js"
   ]
 }
