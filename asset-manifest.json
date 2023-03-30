@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/todo-lists-app/static/css/main.8c542de4.css",
-    "main.js": "/todo-lists-app/static/js/main.17a33393.js",
+    "main.css": "/todo-lists-app/static/css/main.0069a8ae.css",
+    "main.js": "/todo-lists-app/static/js/main.49b76b1d.js",
     "static/media/background-lists.jpeg": "/todo-lists-app/static/media/background-lists.7354206af068b365a11e.jpeg",
     "static/media/background.jpeg": "/todo-lists-app/static/media/background.52ed91591a9f3397d18b.jpeg",
     "static/media/roboto-latin-900italic.woff": "/todo-lists-app/static/media/roboto-latin-900italic.c20d916c1a1b094c1cec.woff",
@@ -29,11 +29,11 @@
     "static/media/roboto-latin-400.woff2": "/todo-lists-app/static/media/roboto-latin-400.176f8f5bd5f02b3abfcf.woff2",
     "static/media/roboto-latin-900.woff2": "/todo-lists-app/static/media/roboto-latin-900.870c8c1486f76054301a.woff2",
     "index.html": "/todo-lists-app/index.html",
-    "main.8c542de4.css.map": "/todo-lists-app/static/css/main.8c542de4.css.map",
-    "main.17a33393.js.map": "/todo-lists-app/static/js/main.17a33393.js.map"
+    "main.0069a8ae.css.map": "/todo-lists-app/static/css/main.0069a8ae.css.map",
+    "main.49b76b1d.js.map": "/todo-lists-app/static/js/main.49b76b1d.js.map"
   },
   "entrypoints": [
-    "static/css/main.8c542de4.css",
-    "static/js/main.17a33393.js"
+    "static/css/main.0069a8ae.css",
+    "static/js/main.49b76b1d.js"
   ]
 }
