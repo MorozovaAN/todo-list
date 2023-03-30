@@ -1,10 +1,10 @@
-## Project:
-Todo lists app
+## Проект:
+Списки задач
 
-## Description:
-Create tasks in the todo list. Change title task or todo list. Mark completed tasks. Filter your tasks. Create as many todo lists as you need.
+## Описание:
+На сайте мы можете создавать списки с задачами. Задачи можно отмечать как выполненные, фильтровать, редактировать и удалять. Можно создать столько списков с задачами, сколько вам нужно. Также вы можете редактировать название списка или удалить его.
 
-## Stack:
+## Технологии:
 - React
 - TypeScript
 - Redux toolkit
